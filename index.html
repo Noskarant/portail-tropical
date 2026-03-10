@@ -514,46 +514,25 @@ function switchTab(tab, el) {
   document.getElementById('panel-' + tab).classList.add('active');
 }
 
-// ===== WEATHER via wttr.in JSONP (fonctionne depuis file://) =====
-// wttr.in supporte le JSONP natif : ?format=j1&callback=xxx
-// Cela injecte un <script> tag — pas de blocage CORS ni file:// !
-
+// ===== WEATHER via Open-Meteo (marche sur GitHub Pages) =====
 const WC = {
-  113:['☀️','Ensoleillé'], 116:['⛅','Partiellement nuageux'], 119:['☁️','Nuageux'],
-  122:['☁️','Couvert'], 143:['🌫️','Brouillard'], 176:['🌦️','Averses légères'],
-  179:['🌨️','Neige légère'], 182:['🌧️','Verglas'], 185:['🌧️','Bruine givrante'],
-  200:['⛈️','Orage'], 227:['🌨️','Poudrerie'], 230:['❄️','Blizzard'],
-  248:['🌫️','Brouillard givrant'], 260:['🌫️','Brouillard épais'],
-  263:['🌦️','Bruine légère'], 266:['🌧️','Bruine'], 281:['🌧️','Bruine givrante'],
-  284:['🌧️','Bruine dense givrante'], 293:['🌧️','Pluie légère'],
-  296:['🌧️','Pluie'], 299:['🌧️','Pluie modérée'], 302:['🌧️','Pluie'],
-  305:['🌧️','Pluie forte'], 308:['🌧️','Pluie très forte'],
-  311:['🌧️','Bruine légère givrante'], 314:['🌧️','Pluie givrante'],
-  317:['🌧️','Mélange neige-pluie'], 320:['🌨️','Neige légère'],
-  323:['🌨️','Neige'], 326:['❄️','Neige modérée'], 329:['❄️','Neige'],
-  332:['❄️','Neige forte'], 335:['❄️','Averses de neige'],
-  338:['❄️','Neige très forte'], 350:['🧊','Grêle'],
-  353:['🌦️','Averses légères'], 356:['🌧️','Averses modérées'],
-  359:['⛈️','Averses violentes'], 362:['🌨️','Averses neige légères'],
-  365:['🌨️','Averses de neige'], 368:['🌨️','Averses neige légères'],
-  371:['❄️','Averses de neige forte'], 374:['🧊','Averses de grêle'],
-  377:['🧊','Grêle'], 386:['⛈️','Orage avec pluie légère'],
-  389:['⛈️','Orage fort'], 392:['⛈️','Orage avec neige'],
-  395:['⛈️','Orage neige fort'],
+  0:['☀️','Ciel dégagé'], 1:['🌤️','Peu nuageux'], 2:['⛅','Partiellement nuageux'],
+  3:['☁️','Couvert'], 45:['🌫️','Brouillard'], 48:['🌫️','Brouillard givrant'],
+  51:['🌦️','Bruine légère'], 53:['🌦️','Bruine'], 55:['🌧️','Bruine dense'],
+  61:['🌧️','Pluie légère'], 63:['🌧️','Pluie'], 65:['🌧️','Pluie forte'],
+  71:['🌨️','Neige légère'], 73:['🌨️','Neige'], 75:['❄️','Neige forte'],
+  80:['🌦️','Averses légères'], 81:['🌧️','Averses'], 82:['⛈️','Averses violentes'],
+  95:['⛈️','Orage'], 96:['⛈️','Orage avec grêle'], 99:['⛈️','Orage violent'],
 };
-
 function getW(code) {
   code = parseInt(code);
   if (WC[code]) return WC[code];
-  // find closest
   const keys = Object.keys(WC).map(Number).sort((a,b)=>a-b);
   let best = keys[0];
   for (let k of keys) { if (k <= code) best = k; }
   return WC[best] || ['🌡️','Variable'];
 }
-
 function getOutfit(t) {
-  t = parseInt(t);
   if (t < 5)  return '🧥 Gros manteau';
   if (t < 12) return '🧣 Manteau';
   if (t < 18) return '🧥 Veste';
@@ -561,107 +540,50 @@ function getOutfit(t) {
   return '🩳 Short & lunettes ☀️';
 }
 
-// Store parsed data
 const wd = { fr: null, re: null };
 
-// Called by JSONP when wttr.in responds
-function wttrCallback_fr(data) {
+async function loadWeatherJsonp() {
+  const uFR = 'https://api.open-meteo.com/v1/forecast?latitude=45.7085&longitude=4.8078&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&timezone=Europe%2FParis';
+  const uRE = 'https://api.open-meteo.com/v1/forecast?latitude=-21.0833&longitude=55.2167&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&timezone=Indian%2FReunion';
   try {
-    const c = data.current_condition[0];
-    wd.fr = {
-      temp: Math.round(parseFloat(c.temp_C)),
-      code: parseInt(c.weatherCode),
-      wind: Math.round(parseFloat(c.windspeedKmph)),
-      hum:  parseInt(c.humidity),
-      desc: c.lang_fr ? c.lang_fr[0].value : c.weatherDesc[0].value
-    };
-    tryApplyWeather();
-  } catch(e) { console.warn('wttr FR parse error', e); }
-}
-
-function wttrCallback_re(data) {
-  try {
-    const c = data.current_condition[0];
-    wd.re = {
-      temp: Math.round(parseFloat(c.temp_C)),
-      code: parseInt(c.weatherCode),
-      wind: Math.round(parseFloat(c.windspeedKmph)),
-      hum:  parseInt(c.humidity),
-      desc: c.lang_fr ? c.lang_fr[0].value : c.weatherDesc[0].value
-    };
-    tryApplyWeather();
-  } catch(e) { console.warn('wttr RE parse error', e); }
-}
-
-function loadWeatherJsonp() {
-  // Remove old script tags if refreshing
-  ['_wttr_script_fr','_wttr_script_re'].forEach(id => {
-    const old = document.getElementById(id);
-    if (old) old.remove();
-  });
-
-  // Oullins, France
-  const sFR = document.createElement('script');
-  sFR.id  = '_wttr_script_fr';
-  sFR.src = 'https://wttr.in/Oullins+France?format=j1&lang=fr&callback=wttrCallback_fr';
-  document.head.appendChild(sFR);
-
-  // L'Éperon, Saint-Paul, La Réunion (lat/lon pour précision)
-  const sRE = document.createElement('script');
-  sRE.id  = '_wttr_script_re';
-  sRE.src = 'https://wttr.in/-21.0833,55.2167?format=j1&lang=fr&callback=wttrCallback_re';
-  document.head.appendChild(sRE);
-}
-
-function tryApplyWeather() {
-  if (!wd.fr || !wd.re) return; // attendre les deux
-  applyWeather();
-  toast('🌤️ Météo chargée !', 'ok');
+    const [rFR, rRE] = await Promise.all([fetch(uFR), fetch(uRE)]);
+    const [dFR, dRE] = await Promise.all([rFR.json(), rRE.json()]);
+    wd.fr = { temp: Math.round(dFR.current.temperature_2m), code: dFR.current.weathercode, wind: Math.round(dFR.current.windspeed_10m), hum: dFR.current.relativehumidity_2m };
+    wd.re = { temp: Math.round(dRE.current.temperature_2m), code: dRE.current.weathercode, wind: Math.round(dRE.current.windspeed_10m), hum: dRE.current.relativehumidity_2m };
+    applyWeather();
+    toast('🌤️ Météo chargée !', 'ok');
+  } catch(e) {
+    toast('⚠️ Météo indisponible', 'err');
+  }
 }
 
 function applyWeather() {
   const fr = wd.fr, re = wd.re;
+  if (!fr || !re) return;
   const [iFR, dFR] = getW(fr.code);
   const [iRE, dRE] = getW(re.code);
-  const descFR = fr.desc || dFR;
-  const descRE = re.desc || dRE;
 
-  // ---- Barre horloges ----
-  document.getElementById('ws-icon-fr').textContent  = iFR;
-  document.getElementById('ws-temp-fr').textContent  = fr.temp + '°C';
-  document.getElementById('ws-desc-fr').textContent  = descFR;
-  document.getElementById('ws-icon-re').textContent  = iRE;
-  document.getElementById('ws-temp-re').textContent  = re.temp + '°C';
-  document.getElementById('ws-desc-re').textContent  = descRE;
+  document.getElementById('ws-icon-fr').textContent = iFR;
+  document.getElementById('ws-temp-fr').textContent = fr.temp + '°C';
+  document.getElementById('ws-desc-fr').textContent = dFR;
+  document.getElementById('ws-icon-re').textContent = iRE;
+  document.getElementById('ws-temp-re').textContent = re.temp + '°C';
+  document.getElementById('ws-desc-re').textContent = dRE;
 
-  // ---- Panel 1 : diff cards ----
-  document.getElementById('live-temp-fr').innerHTML =
-    `<div class="diff-card-icon">${iFR}</div>
-     <div class="diff-card-label">Météo à Oullins</div>
-     <div class="diff-card-value">${fr.temp}°C</div>
-     <div class="diff-card-sub">${descFR} · 💨 ${fr.wind} km/h</div>
-     <div class="diff-card-deco">🏙️</div>`;
-  document.getElementById('live-temp-re').innerHTML =
-    `<div class="diff-card-icon">${iRE}</div>
-     <div class="diff-card-label">Météo à L'Éperon</div>
-     <div class="diff-card-value">${re.temp}°C</div>
-     <div class="diff-card-sub">${descRE} · 💨 ${re.wind} km/h</div>
-     <div class="diff-card-deco">🌊</div>`;
+  document.getElementById('live-temp-fr').innerHTML = `<div class="diff-card-icon">${iFR}</div><div class="diff-card-label">Météo à Oullins</div><div class="diff-card-value">${fr.temp}°C</div><div class="diff-card-sub">${dFR} · 💨 ${fr.wind} km/h</div><div class="diff-card-deco">🏙️</div>`;
+  document.getElementById('live-temp-re').innerHTML = `<div class="diff-card-icon">${iRE}</div><div class="diff-card-label">Météo à L'Éperon</div><div class="diff-card-value">${re.temp}°C</div><div class="diff-card-sub">${dRE} · 💨 ${re.wind} km/h</div><div class="diff-card-deco">🌊</div>`;
 
-  // ---- Panel 2 : cartes météo ----
   document.getElementById('m-icon-fr').textContent = iFR;
   document.getElementById('m-temp-fr').textContent = fr.temp + '°C';
-  document.getElementById('m-desc-fr').textContent = descFR;
+  document.getElementById('m-desc-fr').textContent = dFR;
   document.getElementById('m-hum-fr').textContent  = `💧 ${fr.hum}%`;
   document.getElementById('m-wind-fr').textContent = `💨 ${fr.wind} km/h`;
-
   document.getElementById('m-icon-re').textContent = iRE;
   document.getElementById('m-temp-re').textContent = re.temp + '°C';
-  document.getElementById('m-desc-re').textContent = descRE;
+  document.getElementById('m-desc-re').textContent = dRE;
   document.getElementById('m-hum-re').textContent  = `💧 ${re.hum}%`;
   document.getElementById('m-wind-re').textContent = `💨 ${re.wind} km/h`;
 
-  // ---- Panel 2 : comparaison ----
   document.getElementById('cmp-temp-fr').textContent   = fr.temp + '°C';
   document.getElementById('cmp-temp-re').textContent   = re.temp + '°C';
   document.getElementById('cmp-hum-fr').textContent    = fr.hum + '%';
@@ -675,9 +597,8 @@ function applyWeather() {
   document.getElementById('live-diff-stat').textContent = `${re.temp > fr.temp ? '+' : ''}${diff}°C`;
 }
 
-// Lance au chargement + refresh toutes les 10 min
 loadWeatherJsonp();
-setInterval(() => { wd.fr = null; wd.re = null; loadWeatherJsonp(); }, 10 * 60 * 1000);
+setInterval(loadWeatherJsonp, 10 * 60 * 1000);
 
 // ===== FACTS =====
 const facts = [
