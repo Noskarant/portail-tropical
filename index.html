@@ -2,301 +2,477 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Deux Mondes — Oullins & L'Éperon</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 :root {
-  --fr: #1a4fc4;
-  --re: #ff5500;
-  --ocean: #0096c7;
-  --sand: #ffd166;
-  --leaf: #06d6a0;
-  --hibiscus: #ef476f;
-  --bg: #fff9f0;
-  --card-fr: #f0f4ff;
-  --card-re: #fff4ee;
-  --text: #1a1a2e;
-  --muted: #6b6b8a;
+  --fr: #1a4fc4; --re: #ff5500; --ocean: #0096c7;
+  --sand: #ffd166; --leaf: #06d6a0; --hibiscus: #ef476f;
+  --bg: #f7f3ee; --card-fr: #eef2ff; --card-re: #fff2eb;
+  --text: #1a1a2e; --muted: #7a7a9a; --white: #ffffff;
+  --radius: 18px; --shadow: 0 4px 24px rgba(0,0,0,.09);
 }
 
-body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; overflow-x: hidden;
+  /* bottom nav safe area */
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
-/* HERO */
-.hero { position:relative; background:linear-gradient(135deg,#0077b6 0%,#0096c7 40%,#48cae4 70%,#90e0ef 100%); padding:40px 20px 80px; overflow:hidden; text-align:center; }
-.waves { position:absolute; bottom:-2px; left:0; right:0; height:60px; }
-.palm { position:absolute; bottom:30px; font-size:4rem; animation:sway 4s ease-in-out infinite; transform-origin:bottom center; filter:drop-shadow(0 4px 8px rgba(0,0,0,.2)); }
-.palm-l { left:20px; animation-delay:-1s; }
-.palm-r { right:20px; }
-@keyframes sway { 0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)} }
-.sun { position:absolute; top:20px; right:80px; width:60px; height:60px; background:radial-gradient(circle,#ffd60a,#faa307); border-radius:50%; box-shadow:0 0 30px rgba(255,200,0,.6),0 0 60px rgba(255,200,0,.3); animation:pulse-sun 3s ease-in-out infinite; }
-@keyframes pulse-sun { 0%,100%{transform:scale(1)}50%{transform:scale(1.08)} }
-.plane-hero { position:absolute; top:38px; left:10%; font-size:1.8rem; animation:fly-hero 8s linear infinite; }
-@keyframes fly-hero { from{left:10%}to{left:90%} }
-.hero-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,6vw,3.2rem); font-weight:900; color:white; text-shadow:0 4px 20px rgba(0,0,0,.3); position:relative; z-index:2; margin-bottom:8px; }
-.hero-sub { color:rgba(255,255,255,.85); font-size:1rem; font-weight:600; position:relative; z-index:2; }
+/* ═══════════════════════════════ HERO ═══════════════════════════════ */
+.hero {
+  position: relative;
+  background: linear-gradient(160deg, #0064a8 0%, #0096c7 45%, #48cae4 80%, #90e0ef 100%);
+  padding: 52px 20px 72px;
+  overflow: hidden; text-align: center;
+}
+.sun {
+  position: absolute; top: 16px; right: 24px;
+  width: 54px; height: 54px;
+  background: radial-gradient(circle, #ffe234, #faa307);
+  border-radius: 50%;
+  box-shadow: 0 0 0 12px rgba(255,210,0,.15), 0 0 40px rgba(255,200,0,.5);
+  animation: pulse-sun 3s ease-in-out infinite;
+}
+@keyframes pulse-sun { 0%,100%{transform:scale(1)}50%{transform:scale(1.1)} }
+.palm { position: absolute; bottom: 24px; font-size: 3.4rem; animation: sway 4s ease-in-out infinite; transform-origin: bottom center; }
+.palm-l { left: 8px; animation-delay: -1s; }
+.palm-r { right: 8px; }
+@keyframes sway { 0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)} }
+.plane-hero { position: absolute; top: 32px; font-size: 1.5rem; animation: fly-hero 9s linear infinite; }
+@keyframes fly-hero { from{left:5%}to{left:92%} }
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 7vw, 2.8rem);
+  font-weight: 900; color: white;
+  text-shadow: 0 3px 16px rgba(0,0,0,.25);
+  position: relative; z-index: 2; margin-bottom: 6px;
+  line-height: 1.1;
+}
+.hero-sub { color: rgba(255,255,255,.88); font-size: .9rem; font-weight: 700; position: relative; z-index: 2; }
+.waves { position: absolute; bottom: -1px; left: 0; right: 0; height: 48px; }
 
-/* CLOCKS STRIP */
-.clocks-strip { background:white; display:flex; align-items:stretch; box-shadow:0 4px 20px rgba(0,0,0,.08); position:relative; z-index:10; }
-.clock-half { flex:1; padding:18px 16px; display:flex; align-items:center; gap:12px; }
-.clock-half.fr { background:linear-gradient(135deg,#f0f4ff,#e0eaff); border-right:3px solid #e8e8f0; }
-.clock-half.re { background:linear-gradient(135deg,#fff4ee,#ffe8da); }
-.clock-flag { font-size:2rem; flex-shrink:0; }
-.clock-info { flex:1; min-width:0; }
-.clock-city { font-weight:800; font-size:.88rem; color:var(--text); }
-.clock-time-big { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:700; line-height:1; }
-.clock-half.fr .clock-time-big { color:var(--fr); }
-.clock-half.re .clock-time-big { color:var(--re); }
-.clock-date { font-size:.65rem; color:var(--muted); margin-top:2px; }
-.clock-weather { text-align:right; flex-shrink:0; }
-.weather-icon { font-size:1.7rem; line-height:1; }
-.weather-temp { font-weight:800; font-size:.95rem; margin-top:2px; }
-.clock-half.fr .weather-temp { color:var(--fr); }
-.clock-half.re .weather-temp { color:var(--re); }
-.weather-label { font-size:.63rem; color:var(--muted); }
-.clock-divider { display:flex; align-items:center; justify-content:center; width:50px; background:white; flex-direction:column; gap:4px; flex-shrink:0; }
-.diff-badge { background:var(--sand); color:#7a5800; font-weight:800; font-size:.7rem; padding:4px 7px; border-radius:20px; white-space:nowrap; }
+/* ═══════════════════════════════ CLOCKS ═══════════════════════════════ */
+.clocks-strip {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  background: white; box-shadow: 0 2px 16px rgba(0,0,0,.1);
+  position: sticky; top: 0; z-index: 100;
+}
+.clock-half {
+  padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+}
+.clock-half.fr { background: linear-gradient(135deg,#eef2ff,#dde6ff); }
+.clock-half.re { background: linear-gradient(135deg,#fff2eb,#ffe5d4); }
+.clock-flag { font-size: 1.6rem; flex-shrink: 0; }
+.clock-info { flex: 1; min-width: 0; }
+.clock-city { font-weight: 800; font-size: .72rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.clock-time-big { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; line-height: 1; }
+.clock-half.fr .clock-time-big { color: var(--fr); }
+.clock-half.re .clock-time-big { color: var(--re); }
+.clock-date { font-size: .58rem; color: var(--muted); margin-top: 1px; }
+.clock-weather { text-align: right; flex-shrink: 0; }
+.w-icon { font-size: 1.4rem; line-height: 1; }
+.w-temp { font-weight: 900; font-size: .88rem; margin-top: 1px; }
+.clock-half.fr .w-temp { color: var(--fr); }
+.clock-half.re .w-temp { color: var(--re); }
+.w-label { font-size: .55rem; color: var(--muted); line-height: 1.2; max-width: 56px; text-align: right; }
+.clock-divider {
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 2px; padding: 0 4px;
+  background: white;
+}
+.diff-badge {
+  background: var(--sand); color: #7a5800;
+  font-weight: 900; font-size: .65rem;
+  padding: 3px 6px; border-radius: 20px; white-space: nowrap;
+}
+.diff-label { font-size: .5rem; color: var(--muted); }
 
-/* MAIN */
-.main { max-width:1000px; margin:0 auto; padding:34px 18px 80px; }
+/* ═══════════════════════════════ NAV TABS (bottom) ═══════════════════ */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: white;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid #eee;
+  z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 10px 4px 8px;
+  border: none; background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: .58rem; font-weight: 700; color: var(--muted);
+  cursor: pointer; transition: all .2s; line-height: 1;
+}
+.tab-icon { font-size: 1.3rem; }
+.tab.active { color: var(--ocean); }
+.tab.active .tab-icon { transform: scale(1.15); }
 
-/* TABS */
-.tab-bar { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:26px; justify-content:center; }
-.tab { padding:10px 18px; border-radius:100px; border:2px solid transparent; font-family:'Nunito',sans-serif; font-size:.85rem; font-weight:700; cursor:pointer; transition:all .2s; background:white; color:var(--muted); box-shadow:0 2px 10px rgba(0,0,0,.06); }
-.tab:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.1); }
-.tab.active { color:white; transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.2); }
-.tab:nth-child(1).active { background:var(--ocean); }
-.tab:nth-child(2).active { background:var(--hibiscus); }
-.tab:nth-child(3).active { background:var(--leaf); color:#003d30; }
-.tab:nth-child(4).active { background:var(--sand); color:#5a3e00; }
+/* ═══════════════════════════════ MAIN CONTENT ═══════════════════════ */
+.main {
+  padding: 16px 14px 90px;
+  max-width: 600px; margin: 0 auto;
+}
 
-/* PANELS */
-.panel { display:none; animation:fadeUp .35s ease; }
-.panel.active { display:block; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
+/* ═══════════════════════════════ PANELS ═══════════════════════════════ */
+.panel { display: none; animation: fadeUp .3s ease; }
+.panel.active { display: block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)} }
 
-/* SECTION LABEL */
-.section-label { font-size:.7rem; font-weight:800; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
-.section-label::after { content:''; flex:1; height:1px; background:#e0e0ef; }
+/* ═══════════════════════════════ SECTION LABEL ═════════════════════ */
+.section-label {
+  font-size: .65rem; font-weight: 900; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+  margin: 18px 0 10px; display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: #e0e0ef; }
 
-/* DIFF CARDS */
-.diff-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-bottom:18px; }
-@media(max-width:560px){.diff-grid{grid-template-columns:1fr}}
-.diff-card { border-radius:18px; padding:20px; position:relative; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.09); }
-.diff-card.fr { background:linear-gradient(135deg,#1a4fc4,#4a7aff); color:white; }
-.diff-card.re { background:linear-gradient(135deg,#ff5500,#ff9a55); color:white; }
-.diff-card-icon { font-size:2rem; margin-bottom:8px; }
-.diff-card-label { font-size:.65rem; font-weight:700; letter-spacing:.12em; opacity:.8; text-transform:uppercase; margin-bottom:4px; }
-.diff-card-value { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; line-height:1.1; }
-.diff-card-sub { font-size:.75rem; opacity:.75; margin-top:5px; }
-.diff-card-deco { position:absolute; right:-14px; bottom:-14px; font-size:5rem; opacity:.12; transform:rotate(-15deg); }
+/* ═══════════════════════════════ DIFF GRID ═════════════════════════ */
+.diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.diff-card {
+  border-radius: var(--radius); padding: 16px 14px;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.diff-card.fr { background: linear-gradient(135deg,#1a4fc4,#4a7aff); color: white; }
+.diff-card.re { background: linear-gradient(135deg,#ff5500,#ff8c40); color: white; }
+.diff-card-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.diff-card-label { font-size: .58rem; font-weight: 800; letter-spacing: .1em; opacity: .8; text-transform: uppercase; margin-bottom: 3px; }
+.diff-card-value { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; line-height: 1.1; }
+.diff-card-sub { font-size: .68rem; opacity: .75; margin-top: 4px; line-height: 1.3; }
+.diff-card-deco { position: absolute; right: -10px; bottom: -10px; font-size: 4rem; opacity: .12; transform: rotate(-15deg); pointer-events: none; }
 
-/* FACT CARD */
-.fact-card { background:linear-gradient(135deg,#0096c7,#00b4d8); border-radius:18px; padding:22px; color:white; margin-bottom:18px; position:relative; overflow:hidden; box-shadow:0 8px 30px rgba(0,150,199,.3); }
-.fact-card-label { font-size:.65rem; font-weight:800; letter-spacing:.15em; opacity:.8; text-transform:uppercase; margin-bottom:8px; }
-.fact-card-text { font-size:1rem; font-weight:700; line-height:1.5; }
-.fact-card-deco { position:absolute; right:18px; top:50%; transform:translateY(-50%); font-size:3.5rem; opacity:.2; }
-.fact-nav { display:flex; gap:10px; margin-top:14px; }
-.fact-btn { background:rgba(255,255,255,.2); border:none; color:white; border-radius:10px; padding:8px 14px; font-family:'Nunito',sans-serif; font-size:.8rem; font-weight:700; cursor:pointer; transition:all .2s; }
-.fact-btn:hover { background:rgba(255,255,255,.35); }
+/* ═══════════════════════════════ FACT CARD ═════════════════════════ */
+.fact-card {
+  background: linear-gradient(135deg,#0096c7,#00b4d8);
+  border-radius: var(--radius); padding: 18px;
+  color: white; margin-bottom: 14px; position: relative; overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0,150,199,.3);
+}
+.fact-label { font-size: .62rem; font-weight: 900; letter-spacing: .14em; opacity: .8; text-transform: uppercase; margin-bottom: 8px; }
+.fact-text { font-size: .92rem; font-weight: 700; line-height: 1.5; }
+.fact-deco { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 3rem; opacity: .18; }
+.fact-nav { display: flex; gap: 8px; margin-top: 12px; }
+.fact-btn {
+  background: rgba(255,255,255,.2); border: none; color: white;
+  border-radius: 10px; padding: 8px 14px;
+  font-family: 'Nunito', sans-serif; font-size: .8rem; font-weight: 700;
+  cursor: pointer; transition: all .2s; flex: 1; text-align: center;
+}
+.fact-btn:active { background: rgba(255,255,255,.35); }
 
-/* GENERIC CARD */
-.card { background:white; border-radius:18px; box-shadow:0 4px 20px rgba(0,0,0,.07); padding:22px; margin-bottom:18px; border:1px solid rgba(0,0,0,.05); }
-.card-re { background:var(--card-re); border-left:5px solid var(--re); }
+/* ═══════════════════════════════ SHARED CARD ═══════════════════════ */
+.card {
+  background: white; border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 18px; margin-bottom: 12px;
+  border: 1px solid rgba(0,0,0,.04);
+}
+.card-re { background: var(--card-re); border-left: 4px solid var(--re); }
+.shared-trio { display: flex; gap: 8px; }
+.shared-item {
+  flex: 1; border-radius: 12px; padding: 12px 10px; text-align: center;
+}
+.shared-item.a { background: linear-gradient(135deg,#eef2ff,#dde6ff); }
+.shared-item.b { background: linear-gradient(135deg,#e8fff8,#ccfff0); }
+.shared-item.c { background: linear-gradient(135deg,#fff8e0,#fff0c0); }
+.shared-icon { font-size: 1.4rem; margin-bottom: 4px; }
+.shared-title { font-weight: 800; font-size: .72rem; color: var(--text); margin-bottom: 2px; }
+.shared-desc { font-size: .62rem; color: var(--muted); line-height: 1.3; }
 
-/* METEO */
-.meteo-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
-@media(max-width:560px){.meteo-grid{grid-template-columns:1fr}}
-.meteo-card { border-radius:18px; padding:24px; text-align:center; position:relative; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,.12); }
-.meteo-card.fr { background:linear-gradient(160deg,#1a4fc4,#6a9aff); color:white; }
-.meteo-card.re { background:linear-gradient(160deg,#ff5500,#ffa040); color:white; }
-.meteo-city { font-weight:800; font-size:.78rem; opacity:.85; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
-.meteo-big-icon { font-size:3.8rem; margin-bottom:6px; display:block; min-height:52px; }
-.meteo-temp-big { font-family:'Playfair Display',serif; font-size:3rem; font-weight:700; line-height:1; }
-.meteo-desc { font-size:.82rem; opacity:.8; margin-top:6px; min-height:18px; }
-.meteo-details { display:flex; gap:10px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
-.meteo-detail { background:rgba(255,255,255,.18); border-radius:10px; padding:6px 11px; font-size:.73rem; font-weight:700; }
-.meteo-deco { position:absolute; right:-10px; bottom:-10px; font-size:6rem; opacity:.08; }
-.meteo-compare { background:white; border-radius:18px; box-shadow:0 4px 20px rgba(0,0,0,.07); padding:20px; margin-bottom:18px; }
-.compare-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #f0f0f8; }
-.compare-row:last-child { border-bottom:none; }
-.compare-icon { font-size:1.3rem; width:32px; text-align:center; flex-shrink:0; }
-.compare-label { font-weight:700; font-size:.82rem; flex:1; }
-.compare-vals { display:flex; gap:8px; flex-wrap:wrap; }
-.compare-val { font-size:.8rem; font-weight:800; padding:4px 11px; border-radius:100px; }
-.compare-val.fr { background:var(--card-fr); color:var(--fr); }
-.compare-val.re { background:var(--card-re); color:var(--re); }
+/* ═══════════════════════════════ METEO ═════════════════════════════ */
+.meteo-hero {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
+}
+.meteo-card {
+  border-radius: var(--radius); padding: 18px 14px; text-align: center;
+  position: relative; overflow: hidden; box-shadow: var(--shadow);
+  color: white;
+}
+.meteo-card.fr { background: linear-gradient(160deg,#1a4fc4,#5b8aff); }
+.meteo-card.re { background: linear-gradient(160deg,#ff5500,#ff9a40); }
+.meteo-city-label { font-weight: 800; font-size: .68rem; opacity: .85; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.meteo-big-icon { font-size: 3.2rem; display: block; min-height: 46px; margin-bottom: 4px; }
+.meteo-temp { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 700; line-height: 1; }
+.meteo-desc { font-size: .72rem; opacity: .8; margin-top: 4px; }
+.meteo-pills { display: flex; gap: 5px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+.meteo-pill { background: rgba(255,255,255,.18); border-radius: 8px; padding: 4px 8px; font-size: .65rem; font-weight: 700; }
+.meteo-deco { position: absolute; right: -8px; bottom: -8px; font-size: 5rem; opacity: .08; }
 
-/* QUIZ */
-.quiz-score-bar { display:flex; align-items:center; justify-content:space-between; background:white; border-radius:18px; box-shadow:0 4px 20px rgba(0,0,0,.07); padding:16px 22px; margin-bottom:18px; }
-.quiz-score-side { text-align:center; }
-.quiz-score-flag { font-size:1.6rem; }
-.quiz-score-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; }
-.quiz-score-side.fr .quiz-score-num { color:var(--fr); }
-.quiz-score-side.re .quiz-score-num { color:var(--re); }
-.quiz-score-label { font-size:.66rem; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.1em; }
-.quiz-vs { font-family:'Playfair Display',serif; font-size:1.6rem; color:#ddd; }
-.quiz-question-card { border-radius:18px; padding:26px; box-shadow:0 8px 30px rgba(0,0,0,.12); margin-bottom:16px; color:white; position:relative; overflow:hidden; transition:all .3s; }
-.quiz-question-card.theme-ocean { background:linear-gradient(135deg,#0077b6,#00b4d8); }
-.quiz-question-card.theme-volcano { background:linear-gradient(135deg,#d62828,#ff5500); }
-.quiz-question-card.theme-jungle { background:linear-gradient(135deg,#006400,#06d6a0); }
-.quiz-question-card.theme-culture { background:linear-gradient(135deg,#6a0dad,#ef476f); }
-.quiz-cat-badge { display:inline-block; background:rgba(255,255,255,.2); color:white; font-size:.66rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:5px 12px; border-radius:100px; margin-bottom:12px; }
-.quiz-q-text { font-family:'Playfair Display',serif; font-size:clamp(1rem,3vw,1.3rem); font-weight:700; line-height:1.4; margin-bottom:5px; }
-.quiz-player-turn { font-size:.76rem; opacity:.8; font-weight:600; }
-.quiz-q-deco { position:absolute; right:16px; top:16px; font-size:4rem; opacity:.14; }
-.quiz-options-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-@media(max-width:440px){.quiz-options-grid{grid-template-columns:1fr}}
-.quiz-opt { background:white; border:2px solid #e8e8f0; border-radius:13px; padding:13px 15px; font-family:'Nunito',sans-serif; font-size:.86rem; font-weight:700; cursor:pointer; text-align:left; transition:all .2s; color:var(--text); }
-.quiz-opt:hover:not(:disabled) { border-color:var(--ocean); color:var(--ocean); transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,150,199,.15); }
-.quiz-opt.correct { border-color:#06d6a0; background:#e8fff8; color:#006644; }
-.quiz-opt.wrong { border-color:var(--hibiscus); background:#fff0f4; color:#a00030; }
-.quiz-opt:disabled { cursor:default; }
+.compare-card {
+  background: white; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden; margin-bottom: 12px;
+}
+.compare-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; border-bottom: 1px solid #f0f0f8;
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-icon { font-size: 1.2rem; width: 28px; text-align: center; flex-shrink: 0; }
+.compare-label { font-weight: 700; font-size: .78rem; flex: 1; }
+.compare-vals { display: flex; gap: 6px; }
+.cv { font-size: .75rem; font-weight: 800; padding: 3px 10px; border-radius: 100px; }
+.cv.fr { background: var(--card-fr); color: var(--fr); }
+.cv.re { background: var(--card-re); color: var(--re); }
+.cv.diff { background: linear-gradient(135deg,#ffe8d6,#ffd6b3); color: #7a3000; }
 
-/* CONNEXION */
-.connexion-hero { background:linear-gradient(135deg,#06d6a0,#0096c7); border-radius:22px; padding:30px; text-align:center; color:white; margin-bottom:18px; box-shadow:0 8px 40px rgba(6,214,160,.3); position:relative; overflow:hidden; }
-.connexion-km { font-family:'Playfair Display',serif; font-size:3.5rem; font-weight:900; line-height:1; }
-.connexion-km-label { font-size:.85rem; opacity:.85; font-weight:600; margin-bottom:20px; }
-.connexion-route { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
-.connexion-city { text-align:center; }
-.connexion-city-flag { font-size:2.2rem; }
-.connexion-city-name { font-weight:800; font-size:.92rem; margin-top:3px; }
-.connexion-city-sub { font-size:.68rem; opacity:.75; }
-.connexion-line { flex:1; min-width:80px; height:3px; background:rgba(255,255,255,.4); border-radius:3px; position:relative; }
-.connexion-plane-anim { position:absolute; top:50%; transform:translateY(-50%); font-size:1.2rem; animation:fly-conn 4s linear infinite; }
+/* ═══════════════════════════════ QUIZ ═════════════════════════════ */
+.score-bar {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; margin-bottom: 12px;
+}
+.score-side { text-align: center; }
+.score-flag { font-size: 1.5rem; }
+.score-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; line-height: 1; }
+.score-side.fr .score-num { color: var(--fr); }
+.score-side.re .score-num { color: var(--re); }
+.score-label { font-size: .62rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.score-vs { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #ddd; }
+.quiz-q-card {
+  border-radius: var(--radius); padding: 22px 18px;
+  box-shadow: var(--shadow); margin-bottom: 12px; color: white;
+  position: relative; overflow: hidden; transition: all .3s;
+}
+.quiz-q-card.ocean { background: linear-gradient(135deg,#0077b6,#00b4d8); }
+.quiz-q-card.volcano { background: linear-gradient(135deg,#d62828,#ff5500); }
+.quiz-q-card.jungle { background: linear-gradient(135deg,#006400,#06d6a0); }
+.quiz-q-card.culture { background: linear-gradient(135deg,#6a0dad,#ef476f); }
+.q-badge { display: inline-block; background: rgba(255,255,255,.2); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 4px 11px; border-radius: 100px; margin-bottom: 10px; }
+.q-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+.q-turn { font-size: .73rem; opacity: .8; font-weight: 600; }
+.q-deco { position: absolute; right: 14px; top: 14px; font-size: 3.5rem; opacity: .14; }
+.opts-grid { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  background: white; border: 2px solid #e8e8f0;
+  border-radius: 13px; padding: 13px 16px;
+  font-family: 'Nunito', sans-serif; font-size: .88rem; font-weight: 700;
+  cursor: pointer; text-align: left; transition: all .2s; color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+.opt:active:not(:disabled) { transform: scale(.98); }
+.opt.correct { border-color: #06d6a0; background: #e8fff8; color: #006644; }
+.opt.wrong { border-color: var(--hibiscus); background: #fff0f4; color: #a00030; }
+.opt:disabled { cursor: default; }
+.quiz-footer { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+/* ═══════════════════════════════ ACTUALITÉS ═══════════════════════ */
+.news-header {
+  background: linear-gradient(135deg,#ff5500,#ff8c40);
+  border-radius: var(--radius); padding: 18px;
+  color: white; margin-bottom: 14px; position: relative; overflow: hidden;
+  box-shadow: 0 8px 28px rgba(255,85,0,.3);
+}
+.news-header-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; margin-bottom: 4px; }
+.news-header-sub { font-size: .78rem; opacity: .85; font-weight: 600; }
+.news-header-deco { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 4rem; opacity: .2; }
+
+.news-filters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; scrollbar-width: none; }
+.news-filters::-webkit-scrollbar { display: none; }
+.news-filter {
+  white-space: nowrap; padding: 7px 14px; border-radius: 100px;
+  border: 2px solid #e0e0f0; background: white;
+  font-family: 'Nunito', sans-serif; font-size: .75rem; font-weight: 800;
+  cursor: pointer; transition: all .2s; color: var(--muted); flex-shrink: 0;
+}
+.news-filter.active { background: var(--re); border-color: var(--re); color: white; }
+
+.news-feed { display: flex; flex-direction: column; gap: 10px; }
+.news-item {
+  background: white; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+  border-left: 5px solid;
+  animation: fadeUp .3s ease;
+}
+.news-item.eruption { border-left-color: #d62828; }
+.news-item.ocean { border-left-color: var(--ocean); }
+.news-item.culture { border-left-color: #6a0dad; }
+.news-item.nature { border-left-color: var(--leaf); }
+.news-item.alerte { border-left-color: var(--sand); }
+.news-body { padding: 14px 16px; }
+.news-cat-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.news-cat-badge {
+  font-size: .58rem; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 100px;
+}
+.news-item.eruption .news-cat-badge { background: #fff0f0; color: #d62828; }
+.news-item.ocean .news-cat-badge { background: #e8f6ff; color: var(--ocean); }
+.news-item.culture .news-cat-badge { background: #f5eeff; color: #6a0dad; }
+.news-item.nature .news-cat-badge { background: #e8fff8; color: #006644; }
+.news-item.alerte .news-cat-badge { background: #fff8e0; color: #7a5800; }
+.news-time { font-size: .6rem; color: var(--muted); font-weight: 600; }
+.news-title { font-weight: 800; font-size: .92rem; color: var(--text); line-height: 1.4; margin-bottom: 5px; }
+.news-summary { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+.news-emoji { font-size: 1.1rem; }
+
+.live-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #06d6a0; margin-right: 4px;
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+
+.news-refresh {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-bottom: 14px;
+  font-size: .73rem; color: var(--muted); font-weight: 700;
+}
+
+/* ═══════════════════════════════ DISTANCE ═════════════════════════ */
+.distance-hero {
+  background: linear-gradient(135deg,#06d6a0,#0096c7);
+  border-radius: var(--radius); padding: 24px 18px; text-align: center;
+  color: white; margin-bottom: 12px;
+  box-shadow: 0 8px 36px rgba(6,214,160,.3); position: relative; overflow: hidden;
+}
+.distance-km { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; }
+.distance-label { font-size: .82rem; opacity: .85; font-weight: 600; margin-bottom: 20px; }
+.route { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.route-city { text-align: center; }
+.route-flag { font-size: 2rem; }
+.route-name { font-weight: 800; font-size: .88rem; margin-top: 3px; }
+.route-sub { font-size: .65rem; opacity: .75; }
+.route-line { flex: 1; min-width: 50px; height: 2px; background: rgba(255,255,255,.4); border-radius: 2px; position: relative; }
+.plane-anim { position: absolute; top: 50%; transform: translateY(-50%); font-size: 1rem; animation: fly-conn 4s linear infinite; }
 @keyframes fly-conn { from{left:-5%}to{left:105%} }
-.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(125px,1fr)); gap:11px; margin-bottom:18px; }
-.stat-card { background:white; border-radius:14px; padding:16px; text-align:center; box-shadow:0 4px 16px rgba(0,0,0,.07); border-top:4px solid; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 12px; }
+.stat-card {
+  background: white; border-radius: var(--radius); padding: 16px 14px;
+  text-align: center; box-shadow: var(--shadow); border-top: 4px solid;
+}
 .stat-card:nth-child(1){border-top-color:var(--ocean)}
 .stat-card:nth-child(2){border-top-color:var(--hibiscus)}
 .stat-card:nth-child(3){border-top-color:var(--leaf)}
 .stat-card:nth-child(4){border-top-color:var(--sand)}
-.stat-icon { font-size:1.6rem; margin-bottom:5px; }
-.stat-num { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:var(--text); line-height:1; }
-.stat-label { font-size:.65rem; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin-top:3px; }
+.stat-icon { font-size: 1.5rem; margin-bottom: 5px; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-label { font-size: .62rem; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; }
 
-/* TOAST */
-.toast-zone { position:fixed; top:20px; right:20px; z-index:999; display:flex; flex-direction:column; gap:8px; }
-.toast { padding:12px 18px; border-radius:13px; font-weight:700; font-size:.82rem; box-shadow:0 8px 30px rgba(0,0,0,.2); animation:toast-in .3s ease; }
-.toast.ok { background:var(--leaf); color:#003d30; }
-.toast.info { background:var(--sand); color:#5a3e00; }
-.toast.err { background:var(--hibiscus); color:white; }
-@keyframes toast-in { from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)} }
+/* ═══════════════════════════════ BUTTONS ═════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 11px 18px; border-radius: 11px; border: none;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .84rem;
+  cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(.97); }
+.btn-ocean { background: var(--ocean); color: white; }
+.btn-leaf { background: var(--leaf); color: #003d30; }
+.btn-ghost { background: white; color: var(--muted); border: 2px solid #e0e0f0; }
 
-/* BUTTONS */
-.btn { display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border-radius:11px; border:none; font-family:'Nunito',sans-serif; font-weight:800; font-size:.86rem; cursor:pointer; transition:all .2s; }
-.btn:hover { transform:translateY(-2px); }
-.btn-ocean { background:var(--ocean); color:white; box-shadow:0 4px 16px rgba(0,150,199,.35); }
-.btn-leaf { background:var(--leaf); color:#003d30; box-shadow:0 4px 16px rgba(6,214,160,.35); }
-.btn-sand { background:var(--sand); color:#5a3e00; }
-
-/* spinner */
-.spin { display:inline-block; animation:spin .8s linear infinite; }
-@keyframes spin { to{transform:rotate(360deg)} }
+/* ═══════════════════════════════ TOAST ═══════════════════════════ */
+.toast-zone { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 999; display: flex; flex-direction: column; gap: 6px; width: 90%; max-width: 360px; }
+.toast { padding: 12px 18px; border-radius: 13px; font-weight: 700; font-size: .82rem; box-shadow: 0 8px 30px rgba(0,0,0,.2); animation: toast-in .3s ease; text-align: center; }
+.toast.ok { background: var(--leaf); color: #003d30; }
+.toast.info { background: var(--sand); color: #5a3e00; }
+.toast.err { background: var(--hibiscus); color: white; }
+@keyframes toast-in { from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)} }
 </style>
 </head>
 <body>
 
 <div class="toast-zone" id="toasts"></div>
 
-<!-- HERO -->
+<!-- ═══ HERO ═══ -->
 <div class="hero">
   <div class="sun"></div>
   <div class="plane-hero">✈️</div>
   <div class="palm palm-l">🌴</div>
   <div class="palm palm-r">🌴</div>
-  <h1 class="hero-title">Deux Mondes, Un Lien</h1>
-  <p class="hero-sub">Oullins, France 🤝 L'Éperon, La Réunion</p>
-  <svg class="waves" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#fff9f0" d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z"/>
-    <path fill="#fff9f0" opacity=".5" d="M0,40 C300,10 600,50 900,30 C1200,10 1380,40 1440,30 L1440,60 L0,60 Z"/>
+  <h1 class="hero-title">Deux Mondes,<br>Un Lien</h1>
+  <p class="hero-sub">Oullins 🤝 L'Éperon, La Réunion</p>
+  <svg class="waves" viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#f7f3ee" d="M0,24 C360,48 720,0 1080,24 C1260,36 1380,16 1440,24 L1440,48 L0,48 Z"/>
   </svg>
 </div>
 
-<!-- CLOCKS STRIP -->
+<!-- ═══ CLOCKS (sticky) ═══ -->
 <div class="clocks-strip">
   <div class="clock-half fr">
     <div class="clock-flag">🇫🇷</div>
     <div class="clock-info">
-      <div class="clock-city">Oullins, France</div>
-      <div class="clock-time-big" id="clock-fr">--:--</div>
-      <div class="clock-date" id="date-fr">--</div>
+      <div class="clock-city">Oullins</div>
+      <div class="clock-time-big" id="clk-fr">--:--</div>
+      <div class="clock-date" id="dat-fr">--</div>
     </div>
-    <div class="clock-weather" id="weather-strip-fr">
-      <div class="weather-icon" id="ws-icon-fr">🌡️</div>
-      <div class="weather-temp" id="ws-temp-fr">--°C</div>
-      <div class="weather-label" id="ws-desc-fr">Chargement…</div>
+    <div class="clock-weather">
+      <div class="w-icon" id="wi-fr">🌡️</div>
+      <div class="w-temp" id="wt-fr">--°</div>
+      <div class="w-label" id="wl-fr">…</div>
     </div>
   </div>
   <div class="clock-divider">
     <div class="diff-badge">+3h</div>
-    <div style="font-size:.58rem;color:var(--muted);text-align:center;margin-top:3px;">décalage</div>
+    <div class="diff-label">décalage</div>
   </div>
   <div class="clock-half re">
     <div class="clock-flag">🏝️</div>
     <div class="clock-info">
-      <div class="clock-city">L'Éperon, La Réunion</div>
-      <div class="clock-time-big" id="clock-re">--:--</div>
-      <div class="clock-date" id="date-re">--</div>
+      <div class="clock-city">L'Éperon</div>
+      <div class="clock-time-big" id="clk-re">--:--</div>
+      <div class="clock-date" id="dat-re">--</div>
     </div>
-    <div class="clock-weather" id="weather-strip-re">
-      <div class="weather-icon" id="ws-icon-re">🌡️</div>
-      <div class="weather-temp" id="ws-temp-re">--°C</div>
-      <div class="weather-label" id="ws-desc-re">Chargement…</div>
+    <div class="clock-weather">
+      <div class="w-icon" id="wi-re">🌡️</div>
+      <div class="w-temp" id="wt-re">--°</div>
+      <div class="w-label" id="wl-re">…</div>
     </div>
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- ═══ MAIN ═══ -->
 <div class="main">
-  <div class="tab-bar">
-    <button class="tab active" onclick="switchTab('explorer',this)">🌍 Nos Différences</button>
-    <button class="tab" onclick="switchTab('meteo',this)">🌤️ Météo en direct</button>
-    <button class="tab" onclick="switchTab('quiz',this)">🎯 Quiz Réunion</button>
-    <button class="tab" onclick="switchTab('connexion',this)">✈️ La Distance</button>
-  </div>
 
-  <!-- PANEL 1 -->
-  <div class="panel active" id="panel-explorer">
-    <div class="section-label">En ce moment, vos deux réalités</div>
+  <!-- PANEL: Nos Différences -->
+  <div class="panel active" id="panel-diff">
+    <div class="section-label">En ce moment</div>
     <div class="diff-grid">
       <div class="diff-card fr">
         <div class="diff-card-icon">🕐</div>
-        <div class="diff-card-label">Heure à Oullins</div>
-        <div class="diff-card-value" id="diff-fr-time">--:--</div>
-        <div class="diff-card-sub">Rhône, Auvergne-Rhône-Alpes</div>
+        <div class="diff-card-label">Heure Oullins</div>
+        <div class="diff-card-value" id="d-clk-fr">--:--</div>
+        <div class="diff-card-sub">Rhône-Alpes, France</div>
         <div class="diff-card-deco">🏙️</div>
       </div>
       <div class="diff-card re">
         <div class="diff-card-icon">🕐</div>
-        <div class="diff-card-label">Heure à L'Éperon</div>
-        <div class="diff-card-value" id="diff-re-time">--:--</div>
-        <div class="diff-card-sub">Saint-Paul, La Réunion — UTC+4</div>
+        <div class="diff-card-label">Heure L'Éperon</div>
+        <div class="diff-card-value" id="d-clk-re">--:--</div>
+        <div class="diff-card-sub">Saint-Paul, UTC+4</div>
         <div class="diff-card-deco">🌋</div>
       </div>
-      <div class="diff-card fr" id="live-temp-fr">
-        <div class="diff-card-icon"><span class="spin">⏳</span></div>
-        <div class="diff-card-label">Météo à Oullins</div>
+      <div class="diff-card fr" id="d-wx-fr">
+        <div class="diff-card-icon">⏳</div>
+        <div class="diff-card-label">Météo Oullins</div>
         <div class="diff-card-value">--°C</div>
-        <div class="diff-card-sub">Chargement en direct…</div>
+        <div class="diff-card-sub">Chargement…</div>
         <div class="diff-card-deco">☁️</div>
       </div>
-      <div class="diff-card re" id="live-temp-re">
-        <div class="diff-card-icon"><span class="spin">⏳</span></div>
-        <div class="diff-card-label">Météo à L'Éperon</div>
+      <div class="diff-card re" id="d-wx-re">
+        <div class="diff-card-icon">⏳</div>
+        <div class="diff-card-label">Météo L'Éperon</div>
         <div class="diff-card-value">--°C</div>
-        <div class="diff-card-sub">Chargement en direct…</div>
+        <div class="diff-card-sub">Chargement…</div>
         <div class="diff-card-deco">🌊</div>
       </div>
     </div>
 
     <div class="section-label">Le saviez-vous ?</div>
     <div class="fact-card">
-      <div class="fact-card-label">🐚 Anecdote</div>
-      <div class="fact-card-text" id="fact-text">…</div>
-      <div class="fact-card-deco" id="fact-deco">🏝️</div>
+      <div class="fact-label">🐚 Anecdote</div>
+      <div class="fact-text" id="fact-text">…</div>
+      <div class="fact-deco" id="fact-deco">🏝️</div>
       <div class="fact-nav">
         <button class="fact-btn" onclick="nextFact()">Suivante →</button>
         <button class="fact-btn" id="fact-liked" onclick="likeFact()">♡ J'adore</button>
@@ -305,415 +481,564 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
 
     <div class="section-label">Ce que vous partagez</div>
     <div class="card">
-      <div style="display:flex;flex-wrap:wrap;gap:11px;">
-        <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#e8f4ff,#d0e8ff);border-radius:13px;padding:14px;text-align:center;">
-          <div style="font-size:1.5rem;margin-bottom:4px;">🇫🇷</div>
-          <div style="font-weight:800;font-size:.85rem;color:var(--fr);">Même pays</div>
-          <div style="font-size:.76rem;color:var(--muted);margin-top:3px;">La Réunion est un DROM depuis 1946</div>
+      <div class="shared-trio">
+        <div class="shared-item a">
+          <div class="shared-icon">🇫🇷</div>
+          <div class="shared-title">Même pays</div>
+          <div class="shared-desc">DROM depuis 1946</div>
         </div>
-        <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#e8fff8,#d0fff0);border-radius:13px;padding:14px;text-align:center;">
-          <div style="font-size:1.5rem;margin-bottom:4px;">📡</div>
-          <div style="font-weight:800;font-size:.85rem;color:#006644;">Même réseau</div>
-          <div style="font-size:.76rem;color:var(--muted);margin-top:3px;">Appels & SMS sans surcoût</div>
+        <div class="shared-item b">
+          <div class="shared-icon">📡</div>
+          <div class="shared-title">Même réseau</div>
+          <div class="shared-desc">SMS sans surcoût</div>
         </div>
-        <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#fff8e0,#fff0c0);border-radius:13px;padding:14px;text-align:center;">
-          <div style="font-size:1.5rem;margin-bottom:4px;">💶</div>
-          <div style="font-weight:800;font-size:.85rem;color:#7a5800;">Même monnaie</div>
-          <div style="font-size:.76rem;color:var(--muted);margin-top:3px;">L'euro partout</div>
+        <div class="shared-item c">
+          <div class="shared-icon">💶</div>
+          <div class="shared-title">Même monnaie</div>
+          <div class="shared-desc">L'euro partout</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PANEL 2 -->
+  <!-- PANEL: Météo -->
   <div class="panel" id="panel-meteo">
-    <div class="section-label">Météo en direct — Open-Meteo</div>
-    <div class="meteo-grid">
+    <div class="section-label">Météo en direct</div>
+    <div class="meteo-hero">
       <div class="meteo-card fr">
-        <div class="meteo-city">🇫🇷 Oullins</div>
-        <div class="meteo-big-icon" id="m-icon-fr">⏳</div>
-        <div class="meteo-temp-big" id="m-temp-fr">--°C</div>
+        <div class="meteo-city-label">🇫🇷 Oullins</div>
+        <span class="meteo-big-icon" id="m-icon-fr">⏳</span>
+        <div class="meteo-temp" id="m-temp-fr">--°C</div>
         <div class="meteo-desc" id="m-desc-fr">Chargement…</div>
-        <div class="meteo-details">
-          <div class="meteo-detail" id="m-hum-fr">💧 --%</div>
-          <div class="meteo-detail" id="m-wind-fr">💨 -- km/h</div>
+        <div class="meteo-pills">
+          <span class="meteo-pill" id="m-hum-fr">💧 --%</span>
+          <span class="meteo-pill" id="m-wind-fr">💨 --</span>
         </div>
         <div class="meteo-deco">🏙️</div>
       </div>
       <div class="meteo-card re">
-        <div class="meteo-city">🏝️ L'Éperon</div>
-        <div class="meteo-big-icon" id="m-icon-re">⏳</div>
-        <div class="meteo-temp-big" id="m-temp-re">--°C</div>
+        <div class="meteo-city-label">🏝️ L'Éperon</div>
+        <span class="meteo-big-icon" id="m-icon-re">⏳</span>
+        <div class="meteo-temp" id="m-temp-re">--°C</div>
         <div class="meteo-desc" id="m-desc-re">Chargement…</div>
-        <div class="meteo-details">
-          <div class="meteo-detail" id="m-hum-re">💧 --%</div>
-          <div class="meteo-detail" id="m-wind-re">💨 -- km/h</div>
+        <div class="meteo-pills">
+          <span class="meteo-pill" id="m-hum-re">💧 --%</span>
+          <span class="meteo-pill" id="m-wind-re">💨 --</span>
         </div>
         <div class="meteo-deco">🌺</div>
       </div>
     </div>
 
-    <div class="section-label">Comparaison directe</div>
-    <div class="meteo-compare">
+    <div class="section-label">Comparaison</div>
+    <div class="compare-card">
       <div class="compare-row">
         <div class="compare-icon">🌡️</div>
-        <div class="compare-label">Température actuelle</div>
+        <div class="compare-label">Température</div>
         <div class="compare-vals">
-          <span class="compare-val fr" id="cmp-temp-fr">--°C</span>
-          <span class="compare-val re" id="cmp-temp-re">--°C</span>
+          <span class="cv fr" id="c-temp-fr">--°C</span>
+          <span class="cv re" id="c-temp-re">--°C</span>
         </div>
       </div>
       <div class="compare-row">
         <div class="compare-icon">💧</div>
         <div class="compare-label">Humidité</div>
         <div class="compare-vals">
-          <span class="compare-val fr" id="cmp-hum-fr">--%</span>
-          <span class="compare-val re" id="cmp-hum-re">--%</span>
+          <span class="cv fr" id="c-hum-fr">--%</span>
+          <span class="cv re" id="c-hum-re">--%</span>
         </div>
       </div>
       <div class="compare-row">
         <div class="compare-icon">💨</div>
         <div class="compare-label">Vent</div>
         <div class="compare-vals">
-          <span class="compare-val fr" id="cmp-wind-fr">-- km/h</span>
-          <span class="compare-val re" id="cmp-wind-re">-- km/h</span>
+          <span class="cv fr" id="c-wind-fr">-- km/h</span>
+          <span class="cv re" id="c-wind-re">-- km/h</span>
         </div>
       </div>
       <div class="compare-row">
         <div class="compare-icon">👔</div>
-        <div class="compare-label">Tenue suggérée</div>
+        <div class="compare-label">Tenue du jour</div>
         <div class="compare-vals">
-          <span class="compare-val fr" id="cmp-outfit-fr">--</span>
-          <span class="compare-val re" id="cmp-outfit-re">--</span>
+          <span class="cv fr" id="c-outfit-fr">--</span>
+          <span class="cv re" id="c-outfit-re">--</span>
         </div>
       </div>
       <div class="compare-row">
         <div class="compare-icon">↕️</div>
-        <div class="compare-label">Écart de température</div>
+        <div class="compare-label">Écart</div>
         <div class="compare-vals">
-          <span class="compare-val re" id="cmp-diff" style="background:linear-gradient(135deg,#ffe8d6,#ffd6b3);color:#7a3000;">-- °C</span>
+          <span class="cv diff" id="c-diff">-- °C</span>
         </div>
       </div>
     </div>
-
-    <div style="text-align:center;margin-top:14px;">
-      <button class="btn btn-ocean" onclick="wd.fr=null;wd.re=null;loadWeatherJsonp();toast('⏳ Actualisation…','info')">🔄 Actualiser</button>
-      <div style="font-size:.68rem;color:var(--muted);margin-top:7px;">Source : wttr.in — fonctionne partout, même en local (file://)</div>
+    <div style="text-align:center">
+      <button class="btn btn-ocean" onclick="loadWeather()">🔄 Actualiser</button>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:6px;">Source : Open-Meteo.com</div>
     </div>
   </div>
 
-  <!-- PANEL 3 -->
+  <!-- PANEL: Quiz -->
   <div class="panel" id="panel-quiz">
-    <div class="quiz-score-bar">
-      <div class="quiz-score-side fr">
-        <div class="quiz-score-flag">🇫🇷</div>
-        <div class="quiz-score-num" id="score-fr">0</div>
-        <div class="quiz-score-label">Oullins</div>
+    <div class="score-bar">
+      <div class="score-side fr">
+        <div class="score-flag">🇫🇷</div>
+        <div class="score-num" id="sc-fr">0</div>
+        <div class="score-label">Oullins</div>
       </div>
-      <div class="quiz-vs">vs</div>
-      <div class="quiz-score-side re">
-        <div class="quiz-score-flag">🏝️</div>
-        <div class="quiz-score-num" id="score-re">0</div>
-        <div class="quiz-score-label">L'Éperon</div>
+      <div class="score-vs">vs</div>
+      <div class="score-side re">
+        <div class="score-flag">🏝️</div>
+        <div class="score-num" id="sc-re">0</div>
+        <div class="score-label">L'Éperon</div>
       </div>
     </div>
-    <div class="quiz-question-card theme-ocean" id="quiz-card">
-      <div class="quiz-cat-badge" id="q-cat">Géographie</div>
-      <div class="quiz-q-text" id="q-text">Chargement...</div>
-      <div class="quiz-player-turn" id="q-turn">Tour de : 🇫🇷 Oullins</div>
-      <div class="quiz-q-deco" id="q-deco">🌊</div>
+    <div class="quiz-q-card ocean" id="q-card">
+      <div class="q-badge" id="q-cat">Géographie</div>
+      <div class="q-text" id="q-text">Chargement…</div>
+      <div class="q-turn" id="q-turn">Tour : 🇫🇷 Oullins</div>
+      <div class="q-deco" id="q-deco">🌊</div>
     </div>
-    <div class="quiz-options-grid" id="quiz-opts"></div>
-    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-      <button class="btn btn-leaf" onclick="skipQuestion()">Passer →</button>
-      <span style="font-size:.76rem;color:var(--muted);">Question <span id="q-num">1</span>/15 — alternance automatique</span>
+    <div class="opts-grid" id="q-opts"></div>
+    <div class="quiz-footer" style="margin-top:12px">
+      <button class="btn btn-leaf" onclick="skipQ()">Passer →</button>
+      <span style="font-size:.72rem;color:var(--muted)">Q <span id="q-num">1</span>/15</span>
     </div>
   </div>
 
-  <!-- PANEL 4 -->
-  <div class="panel" id="panel-connexion">
-    <div class="connexion-hero">
-      <div class="connexion-km">9 250</div>
-      <div class="connexion-km-label">kilomètres entre Oullins et L'Éperon</div>
-      <div class="connexion-route">
-        <div class="connexion-city">
-          <div class="connexion-city-flag">🇫🇷</div>
-          <div class="connexion-city-name">Oullins</div>
-          <div class="connexion-city-sub">Métropole de Lyon</div>
+  <!-- PANEL: Actualités -->
+  <div class="panel" id="panel-news">
+    <div class="news-header">
+      <div class="news-header-title">🏝️ L'île en direct</div>
+      <div class="news-header-sub"><span class="live-dot"></span>Actualités de La Réunion</div>
+      <div class="news-header-deco">📰</div>
+    </div>
+
+    <div class="news-refresh">
+      <span class="live-dot"></span>
+      Mis à jour à <span id="news-time">--:--</span> · <button class="btn btn-ghost" onclick="renderNews(currentCat)" style="padding:5px 12px;font-size:.72rem">🔄 Refresh</button>
+    </div>
+
+    <div class="news-filters" id="news-filters">
+      <button class="news-filter active" onclick="filterNews('all', this)">🌴 Tout</button>
+      <button class="news-filter" onclick="filterNews('eruption', this)">🌋 Éruption</button>
+      <button class="news-filter" onclick="filterNews('ocean', this)">🐋 Océan</button>
+      <button class="news-filter" onclick="filterNews('nature', this)">🌿 Nature</button>
+      <button class="news-filter" onclick="filterNews('alerte', this)">⚠️ Alertes</button>
+      <button class="news-filter" onclick="filterNews('culture', this)">🎵 Culture</button>
+    </div>
+
+    <div class="news-feed" id="news-feed"></div>
+  </div>
+
+  <!-- PANEL: Distance -->
+  <div class="panel" id="panel-dist">
+    <div class="distance-hero">
+      <div class="distance-km">9 250</div>
+      <div class="distance-label">km entre Oullins et L'Éperon</div>
+      <div class="route">
+        <div class="route-city">
+          <div class="route-flag">🇫🇷</div>
+          <div class="route-name">Oullins</div>
+          <div class="route-sub">Lyon, France</div>
         </div>
-        <div class="connexion-line"><div class="connexion-plane-anim">✈️</div></div>
-        <div class="connexion-city">
-          <div class="connexion-city-flag">🏝️</div>
-          <div class="connexion-city-name">L'Éperon</div>
-          <div class="connexion-city-sub">Saint-Paul, La Réunion</div>
+        <div class="route-line"><div class="plane-anim">✈️</div></div>
+        <div class="route-city">
+          <div class="route-flag">🏝️</div>
+          <div class="route-name">L'Éperon</div>
+          <div class="route-sub">Saint-Paul, RE</div>
         </div>
       </div>
     </div>
-    <div class="section-label">En chiffres</div>
+
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-icon">✈️</div><div class="stat-num">~11h</div><div class="stat-label">En avion</div></div>
-      <div class="stat-card"><div class="stat-icon">⏰</div><div class="stat-num">+3h</div><div class="stat-label">Décalage horaire</div></div>
-      <div class="stat-card"><div class="stat-icon">🌡️</div><div class="stat-num" id="live-diff-stat">~19°C</div><div class="stat-label">Différence temp.</div></div>
-      <div class="stat-card"><div class="stat-icon">🌊</div><div class="stat-num">750k</div><div class="stat-label">Hab. à La Réunion</div></div>
+      <div class="stat-card"><div class="stat-icon">⏰</div><div class="stat-num">+3h</div><div class="stat-label">Décalage</div></div>
+      <div class="stat-card"><div class="stat-icon">🌡️</div><div class="stat-num" id="live-diff">~19°</div><div class="stat-label">Écart temp.</div></div>
+      <div class="stat-card"><div class="stat-icon">🌊</div><div class="stat-num">750k</div><div class="stat-label">Habitants RE</div></div>
     </div>
-    <div class="section-label">L'Éperon — Commune de Saint-Paul</div>
-    <div style="display:flex;flex-direction:column;gap:11px;">
-      <div class="card card-re" style="display:flex;gap:13px;align-items:flex-start;">
-        <div style="font-size:1.7rem;">🌴</div>
-        <div><div style="font-weight:800;margin-bottom:3px;">Dans les hauts de Saint-Paul</div><div style="font-size:.82rem;color:var(--muted);">Quartier résidentiel perché avec vue imprenable sur le lagon de Saint-Paul et l'océan Indien.</div></div>
-      </div>
-      <div class="card card-re" style="display:flex;gap:13px;align-items:flex-start;">
-        <div style="font-size:1.7rem;">🌋</div>
-        <div><div style="font-weight:800;margin-bottom:3px;">Le Piton de la Fournaise à portée</div><div style="font-size:.82rem;color:var(--muted);">L'un des volcans les plus actifs du monde, visible depuis les hauts de l'île. Éruptions quasi annuelles.</div></div>
-      </div>
-      <div class="card card-re" style="display:flex;gap:13px;align-items:flex-start;">
-        <div style="font-size:1.7rem;">🐠</div>
-        <div><div style="font-weight:800;margin-bottom:3px;">Lagon de Saint-Paul — Patrimoine UNESCO</div><div style="font-size:.82rem;color:var(--muted);">Coraux, tortues et poissons tropicaux à quelques minutes de L'Éperon.</div></div>
-      </div>
-      <div class="card card-re" style="display:flex;gap:13px;align-items:flex-start;">
-        <div style="font-size:1.7rem;">🍛</div>
-        <div><div style="font-weight:800;margin-bottom:3px;">Carry, rougail et ti punch</div><div style="font-size:.82rem;color:var(--muted);">Cuisine réunionnaise : influences malgaches, indiennes, chinoises et françaises. Spécialité : carry poulet au combava.</div></div>
-      </div>
+
+    <div class="section-label">L'Éperon — Saint-Paul</div>
+    <div class="card card-re" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px">
+      <div style="font-size:1.6rem">🌴</div>
+      <div><div style="font-weight:800;margin-bottom:3px;font-size:.9rem">Dans les hauts de Saint-Paul</div><div style="font-size:.78rem;color:var(--muted);line-height:1.5">Vue imprenable sur le lagon classé UNESCO et l'océan Indien depuis les hauteurs.</div></div>
+    </div>
+    <div class="card card-re" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px">
+      <div style="font-size:1.6rem">🌋</div>
+      <div><div style="font-weight:800;margin-bottom:3px;font-size:.9rem">Piton de la Fournaise</div><div style="font-size:.78rem;color:var(--muted);line-height:1.5">L'un des volcans les plus actifs du monde. Éruptions quasi annuelles visibles depuis les hauts.</div></div>
+    </div>
+    <div class="card card-re" style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px">
+      <div style="font-size:1.6rem">🐋</div>
+      <div><div style="font-weight:800;margin-bottom:3px;font-size:.9rem">Baleines à bosse</div><div style="font-size:.78rem;color:var(--muted);line-height:1.5">De juillet à octobre, les baleines à bosse migrent près des côtes de La Réunion pour mettre bas.</div></div>
+    </div>
+    <div class="card card-re" style="display:flex;gap:12px;align-items:flex-start">
+      <div style="font-size:1.6rem">🍛</div>
+      <div><div style="font-weight:800;margin-bottom:3px;font-size:.9rem">Cuisine créole</div><div style="font-size:.78rem;color:var(--muted);line-height:1.5">Carry, rougail saucisse, samossas… une cuisine métissée malgache, indienne, chinoise et française.</div></div>
     </div>
   </div>
+
 </div><!-- /main -->
 
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="tab-bar">
+  <button class="tab active" onclick="switchTab('diff',this)">
+    <span class="tab-icon">🌍</span>Différences
+  </button>
+  <button class="tab" onclick="switchTab('meteo',this)">
+    <span class="tab-icon">🌤️</span>Météo
+  </button>
+  <button class="tab" onclick="switchTab('news',this)">
+    <span class="tab-icon">📰</span>Actus
+  </button>
+  <button class="tab" onclick="switchTab('quiz',this)">
+    <span class="tab-icon">🎯</span>Quiz
+  </button>
+  <button class="tab" onclick="switchTab('dist',this)">
+    <span class="tab-icon">✈️</span>Distance
+  </button>
+</nav>
+
 <script>
-// ===== CLOCKS =====
-function fmt(d, tz) {
-  return new Intl.DateTimeFormat('fr-FR', { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone: tz }).format(d);
+// ═══ CLOCKS ═══
+function fmt(d,tz){return new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:tz}).format(d);}
+function fmtDate(d,tz){return new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long',timeZone:tz}).format(d);}
+function updateClocks(){
+  const now=new Date();
+  document.getElementById('clk-fr').textContent=fmt(now,'Europe/Paris');
+  document.getElementById('clk-re').textContent=fmt(now,'Indian/Reunion');
+  document.getElementById('dat-fr').textContent=fmtDate(now,'Europe/Paris');
+  document.getElementById('dat-re').textContent=fmtDate(now,'Indian/Reunion');
+  document.getElementById('d-clk-fr').textContent=fmt(now,'Europe/Paris').slice(0,5);
+  document.getElementById('d-clk-re').textContent=fmt(now,'Indian/Reunion').slice(0,5);
 }
-function fmtDate(d, tz) {
-  return new Intl.DateTimeFormat('fr-FR', { weekday:'long', day:'numeric', month:'long', timeZone: tz }).format(d);
-}
-function updateClocks() {
-  const now = new Date();
-  document.getElementById('clock-fr').textContent = fmt(now, 'Europe/Paris');
-  document.getElementById('clock-re').textContent = fmt(now, 'Indian/Reunion');
-  document.getElementById('date-fr').textContent = fmtDate(now, 'Europe/Paris');
-  document.getElementById('date-re').textContent = fmtDate(now, 'Indian/Reunion');
-  document.getElementById('diff-fr-time').textContent = fmt(now, 'Europe/Paris').slice(0, 5);
-  document.getElementById('diff-re-time').textContent = fmt(now, 'Indian/Reunion').slice(0, 5);
-}
-updateClocks();
-setInterval(updateClocks, 1000);
+updateClocks(); setInterval(updateClocks,1000);
 
-// ===== TOAST =====
-function toast(msg, type='ok') {
-  const t = document.createElement('div');
-  t.className = `toast ${type}`; t.textContent = msg;
-  document.getElementById('toasts').appendChild(t);
-  setTimeout(() => t.remove(), 3000);
-}
-
-// ===== TABS =====
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+// ═══ TABS ═══
+function switchTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('panel-' + tab).classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ===== WEATHER via Open-Meteo (marche sur GitHub Pages) =====
-const WC = {
-  0:['☀️','Ciel dégagé'], 1:['🌤️','Peu nuageux'], 2:['⛅','Partiellement nuageux'],
-  3:['☁️','Couvert'], 45:['🌫️','Brouillard'], 48:['🌫️','Brouillard givrant'],
-  51:['🌦️','Bruine légère'], 53:['🌦️','Bruine'], 55:['🌧️','Bruine dense'],
-  61:['🌧️','Pluie légère'], 63:['🌧️','Pluie'], 65:['🌧️','Pluie forte'],
-  71:['🌨️','Neige légère'], 73:['🌨️','Neige'], 75:['❄️','Neige forte'],
-  80:['🌦️','Averses légères'], 81:['🌧️','Averses'], 82:['⛈️','Averses violentes'],
-  95:['⛈️','Orage'], 96:['⛈️','Orage avec grêle'], 99:['⛈️','Orage violent'],
+// ═══ TOAST ═══
+function toast(msg,type='ok'){
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;t.textContent=msg;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+// ═══ WEATHER ═══
+const WC={
+  0:['☀️','Dégagé'],1:['🌤️','Peu nuageux'],2:['⛅','Partiellement nuageux'],
+  3:['☁️','Couvert'],45:['🌫️','Brouillard'],48:['🌫️','Brouillard givrant'],
+  51:['🌦️','Bruine'],53:['🌦️','Bruine mod.'],55:['🌧️','Bruine dense'],
+  61:['🌧️','Pluie légère'],63:['🌧️','Pluie'],65:['🌧️','Pluie forte'],
+  71:['🌨️','Neige légère'],73:['🌨️','Neige'],75:['❄️','Neige forte'],
+  80:['🌦️','Averses'],81:['🌧️','Averses mod.'],82:['⛈️','Averses fortes'],
+  95:['⛈️','Orage'],96:['⛈️','Orage+grêle'],99:['⛈️','Orage violent'],
 };
-function getW(code) {
-  code = parseInt(code);
-  if (WC[code]) return WC[code];
-  const keys = Object.keys(WC).map(Number).sort((a,b)=>a-b);
-  let best = keys[0];
-  for (let k of keys) { if (k <= code) best = k; }
-  return WC[best] || ['🌡️','Variable'];
+function getW(code){
+  code=parseInt(code);if(WC[code])return WC[code];
+  const keys=Object.keys(WC).map(Number).sort((a,b)=>a-b);
+  let best=keys[0];for(let k of keys){if(k<=code)best=k;}
+  return WC[best]||['🌡️','Variable'];
 }
-function getOutfit(t) {
-  if (t < 5)  return '🧥 Gros manteau';
-  if (t < 12) return '🧣 Manteau';
-  if (t < 18) return '🧥 Veste';
-  if (t < 24) return '👕 T-shirt';
-  return '🩳 Short & lunettes ☀️';
+function getOutfit(t){
+  if(t<5)return'🧥 Manteau';if(t<12)return'🧣 Veste+écharpe';
+  if(t<18)return'🧥 Veste';if(t<24)return'👕 T-shirt';return'🩳 Short ☀️';
 }
-
-const wd = { fr: null, re: null };
-
-async function loadWeatherJsonp() {
-  const uFR = 'https://api.open-meteo.com/v1/forecast?latitude=45.7085&longitude=4.8078&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&timezone=Europe%2FParis';
-  const uRE = 'https://api.open-meteo.com/v1/forecast?latitude=-21.0833&longitude=55.2167&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&timezone=Indian%2FReunion';
-  try {
-    const [rFR, rRE] = await Promise.all([fetch(uFR), fetch(uRE)]);
-    const [dFR, dRE] = await Promise.all([rFR.json(), rRE.json()]);
-    wd.fr = { temp: Math.round(dFR.current.temperature_2m), code: dFR.current.weathercode, wind: Math.round(dFR.current.windspeed_10m), hum: dFR.current.relativehumidity_2m };
-    wd.re = { temp: Math.round(dRE.current.temperature_2m), code: dRE.current.weathercode, wind: Math.round(dRE.current.windspeed_10m), hum: dRE.current.relativehumidity_2m };
-    applyWeather();
-    toast('🌤️ Météo chargée !', 'ok');
-  } catch(e) {
-    toast('⚠️ Météo indisponible', 'err');
-  }
+const wd={fr:null,re:null};
+async function loadWeather(){
+  const uFR='https://api.open-meteo.com/v1/forecast?latitude=45.7085&longitude=4.8078&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&timezone=Europe%2FParis';
+  const uRE='https://api.open-meteo.com/v1/forecast?latitude=-21.0833&longitude=55.2167&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m&timezone=Indian%2FReunion';
+  try{
+    const[rF,rR]=await Promise.all([fetch(uFR),fetch(uRE)]);
+    const[dF,dR]=await Promise.all([rF.json(),rR.json()]);
+    wd.fr={temp:Math.round(dF.current.temperature_2m),code:dF.current.weathercode,wind:Math.round(dF.current.windspeed_10m),hum:dF.current.relativehumidity_2m};
+    wd.re={temp:Math.round(dR.current.temperature_2m),code:dR.current.weathercode,wind:Math.round(dR.current.windspeed_10m),hum:dR.current.relativehumidity_2m};
+    applyWeather();toast('🌤️ Météo chargée !','ok');
+  }catch(e){toast('⚠️ Météo indisponible','err');}
 }
-
-function applyWeather() {
-  const fr = wd.fr, re = wd.re;
-  if (!fr || !re) return;
-  const [iFR, dFR] = getW(fr.code);
-  const [iRE, dRE] = getW(re.code);
-
-  document.getElementById('ws-icon-fr').textContent = iFR;
-  document.getElementById('ws-temp-fr').textContent = fr.temp + '°C';
-  document.getElementById('ws-desc-fr').textContent = dFR;
-  document.getElementById('ws-icon-re').textContent = iRE;
-  document.getElementById('ws-temp-re').textContent = re.temp + '°C';
-  document.getElementById('ws-desc-re').textContent = dRE;
-
-  document.getElementById('live-temp-fr').innerHTML = `<div class="diff-card-icon">${iFR}</div><div class="diff-card-label">Météo à Oullins</div><div class="diff-card-value">${fr.temp}°C</div><div class="diff-card-sub">${dFR} · 💨 ${fr.wind} km/h</div><div class="diff-card-deco">🏙️</div>`;
-  document.getElementById('live-temp-re').innerHTML = `<div class="diff-card-icon">${iRE}</div><div class="diff-card-label">Météo à L'Éperon</div><div class="diff-card-value">${re.temp}°C</div><div class="diff-card-sub">${dRE} · 💨 ${re.wind} km/h</div><div class="diff-card-deco">🌊</div>`;
-
-  document.getElementById('m-icon-fr').textContent = iFR;
-  document.getElementById('m-temp-fr').textContent = fr.temp + '°C';
-  document.getElementById('m-desc-fr').textContent = dFR;
-  document.getElementById('m-hum-fr').textContent  = `💧 ${fr.hum}%`;
-  document.getElementById('m-wind-fr').textContent = `💨 ${fr.wind} km/h`;
-  document.getElementById('m-icon-re').textContent = iRE;
-  document.getElementById('m-temp-re').textContent = re.temp + '°C';
-  document.getElementById('m-desc-re').textContent = dRE;
-  document.getElementById('m-hum-re').textContent  = `💧 ${re.hum}%`;
-  document.getElementById('m-wind-re').textContent = `💨 ${re.wind} km/h`;
-
-  document.getElementById('cmp-temp-fr').textContent   = fr.temp + '°C';
-  document.getElementById('cmp-temp-re').textContent   = re.temp + '°C';
-  document.getElementById('cmp-hum-fr').textContent    = fr.hum + '%';
-  document.getElementById('cmp-hum-re').textContent    = re.hum + '%';
-  document.getElementById('cmp-wind-fr').textContent   = fr.wind + ' km/h';
-  document.getElementById('cmp-wind-re').textContent   = re.wind + ' km/h';
-  document.getElementById('cmp-outfit-fr').textContent = getOutfit(fr.temp);
-  document.getElementById('cmp-outfit-re').textContent = getOutfit(re.temp);
-  const diff = Math.abs(re.temp - fr.temp);
-  document.getElementById('cmp-diff').textContent      = `${diff}°C d'écart`;
-  document.getElementById('live-diff-stat').textContent = `${re.temp > fr.temp ? '+' : ''}${diff}°C`;
+function applyWeather(){
+  const fr=wd.fr,re=wd.re;if(!fr||!re)return;
+  const[iFR,dFR]=getW(fr.code);const[iRE,dRE]=getW(re.code);
+  // Header clocks
+  document.getElementById('wi-fr').textContent=iFR;
+  document.getElementById('wt-fr').textContent=fr.temp+'°';
+  document.getElementById('wl-fr').textContent=dFR;
+  document.getElementById('wi-re').textContent=iRE;
+  document.getElementById('wt-re').textContent=re.temp+'°';
+  document.getElementById('wl-re').textContent=dRE;
+  // Panel diff
+  document.getElementById('d-wx-fr').innerHTML=`<div class="diff-card-icon">${iFR}</div><div class="diff-card-label">Météo Oullins</div><div class="diff-card-value">${fr.temp}°C</div><div class="diff-card-sub">${dFR} · 💨${fr.wind}km/h</div><div class="diff-card-deco">🏙️</div>`;
+  document.getElementById('d-wx-re').innerHTML=`<div class="diff-card-icon">${iRE}</div><div class="diff-card-label">Météo L'Éperon</div><div class="diff-card-value">${re.temp}°C</div><div class="diff-card-sub">${dRE} · 💨${re.wind}km/h</div><div class="diff-card-deco">🌊</div>`;
+  // Panel meteo
+  document.getElementById('m-icon-fr').textContent=iFR;document.getElementById('m-temp-fr').textContent=fr.temp+'°C';document.getElementById('m-desc-fr').textContent=dFR;document.getElementById('m-hum-fr').textContent=`💧${fr.hum}%`;document.getElementById('m-wind-fr').textContent=`💨${fr.wind}km/h`;
+  document.getElementById('m-icon-re').textContent=iRE;document.getElementById('m-temp-re').textContent=re.temp+'°C';document.getElementById('m-desc-re').textContent=dRE;document.getElementById('m-hum-re').textContent=`💧${re.hum}%`;document.getElementById('m-wind-re').textContent=`💨${re.wind}km/h`;
+  // Compare
+  document.getElementById('c-temp-fr').textContent=fr.temp+'°C';document.getElementById('c-temp-re').textContent=re.temp+'°C';
+  document.getElementById('c-hum-fr').textContent=fr.hum+'%';document.getElementById('c-hum-re').textContent=re.hum+'%';
+  document.getElementById('c-wind-fr').textContent=fr.wind+'km/h';document.getElementById('c-wind-re').textContent=re.wind+'km/h';
+  document.getElementById('c-outfit-fr').textContent=getOutfit(fr.temp);document.getElementById('c-outfit-re').textContent=getOutfit(re.temp);
+  const diff=Math.abs(re.temp-fr.temp);
+  document.getElementById('c-diff').textContent=`${diff}°C d'écart`;
+  document.getElementById('live-diff').textContent=`${diff>0?'+':''}${diff}°`;
 }
+loadWeather();setInterval(loadWeather,10*60*1000);
 
-loadWeatherJsonp();
-setInterval(loadWeatherJsonp, 10 * 60 * 1000);
-
-// ===== FACTS =====
-const facts = [
-  { text:"La Réunion est 5× plus petite que la Corse mais abrite à la fois un volcan actif, des plages tropicales, des forêts nuageuses et des cirques spectaculaires.", deco:"🌋" },
-  { text:"Le cirque de Mafate est l'un des seuls endroits habités mais totalement inaccessibles en voiture — uniquement à pied ou en hélicoptère.", deco:"🚁" },
-  { text:"Entre novembre et avril, La Réunion peut être frappée par des cyclones avec des vents dépassant 300 km/h. La vie s'arrête.", deco:"🌀" },
-  { text:"Le Piton des Neiges (3 070 m) est le point culminant de tout l'océan Indien — il dépasse tous les sommets de France métro sauf le Mont-Blanc.", deco:"🏔️" },
-  { text:"À La Réunion, il existe autant de recettes de carry que de familles. Chacun a SA version secrète, transmise de génération en génération.", deco:"🍛" },
-  { text:"L'Éperon est dans les hauts de Saint-Paul, sur la côte ouest de La Réunion, côté 'sous le vent' — la plus ensoleillée et la plus douce.", deco:"🌴" },
-  { text:"Malgré 9 250 km de distance entre Oullins et L'Éperon, les deux villes partagent les mêmes lois, la même monnaie et les mêmes droits.", deco:"🇫🇷" },
-  { text:"La Réunion compte plus de 900 espèces végétales endémiques et un lagon classé Patrimoine UNESCO — une biodiversité exceptionnelle.", deco:"🌊" },
+// ═══ FACTS ═══
+const facts=[
+  {text:"La Réunion est 5× plus petite que la Corse mais abrite un volcan actif, des plages tropicales, des forêts nuageuses et des cirques classés UNESCO.",deco:"🌋"},
+  {text:"Le cirque de Mafate est l'un des seuls endroits habités totalement inaccessibles en voiture — uniquement à pied ou en hélicoptère.",deco:"🚁"},
+  {text:"De juillet à octobre, des baleines à bosse migrent près des côtes réunionnaises pour mettre bas. On peut les voir depuis le bord !",deco:"🐋"},
+  {text:"Le Piton des Neiges (3 070 m) est le plus haut sommet de l'Océan Indien — plus haut que tous les sommets de France métro sauf le Mont-Blanc.",deco:"🏔️"},
+  {text:"À La Réunion, il existe autant de recettes de carry que de familles. Chacun a SA version secrète, transmise de génération en génération.",deco:"🍛"},
+  {text:"L'Éperon est dans les hauts de Saint-Paul, côté 'sous le vent' — la côte ouest la plus ensoleillée et la plus douce de l'île.",deco:"🌴"},
+  {text:"Entre novembre et avril, des cyclones tropicaux peuvent frapper La Réunion avec des vents dépassant 300 km/h. La vie s'arrête complètement.",deco:"🌀"},
+  {text:"La Réunion compte plus de 900 espèces végétales endémiques. Le lagon est classé Patrimoine Mondial UNESCO depuis 2010.",deco:"🌊"},
 ];
-let fi = 0;
-function nextFact() {
-  const f = facts[fi % facts.length];
-  document.getElementById('fact-text').textContent = f.text;
-  document.getElementById('fact-deco').textContent = f.deco;
-  fi++;
-  const btn = document.getElementById('fact-liked');
-  btn.textContent = '♡ J\'adore';
-  btn.style.background = 'rgba(255,255,255,0.1)';
+let fi=0;
+function nextFact(){
+  const f=facts[fi%facts.length];
+  document.getElementById('fact-text').textContent=f.text;
+  document.getElementById('fact-deco').textContent=f.deco;fi++;
+  document.getElementById('fact-liked').textContent='♡ J\'adore';
+  document.getElementById('fact-liked').style.background='rgba(255,255,255,0.2)';
 }
-function likeFact() {
-  document.getElementById('fact-liked').textContent = '❤️ Adoré !';
-  document.getElementById('fact-liked').style.background = 'rgba(255,100,100,0.3)';
-  toast('❤️ Anecdote adorée !', 'info');
+function likeFact(){
+  document.getElementById('fact-liked').textContent='❤️ Adoré !';
+  document.getElementById('fact-liked').style.background='rgba(255,100,100,0.35)';
+  toast('❤️ Anecdote adorée !','info');
 }
 nextFact();
 
-// ===== QUIZ =====
-const questions = [
-  {cat:'Géographie',theme:'theme-ocean',deco:'🌊',q:"Quelle est la superficie de La Réunion ?",opts:["2 512 km²","4 200 km²","1 800 km²","3 100 km²"],ans:0},
-  {cat:'Gastronomie',theme:'theme-volcano',deco:'🍛',q:"Quel est le plat emblématique de La Réunion ?",opts:["Rougail saucisse","Bouillabaisse","Cassoulet","Poulet rôti"],ans:0},
-  {cat:'Nature',theme:'theme-jungle',deco:'🏔️',q:"Comment s'appelle le plus haut sommet de l'Océan Indien ?",opts:["Piton des Neiges","Piton de la Fournaise","Mont Bellecombe","Grand Bénare"],ans:0},
-  {cat:'Culture',theme:'theme-culture',deco:'🎵',q:"Le maloya est inscrit au patrimoine immatériel de l'UNESCO depuis…",opts:["2009","1990","2015","2001"],ans:0},
-  {cat:'Géographie',theme:'theme-ocean',deco:'📍',q:"Dans quel océan se trouve La Réunion ?",opts:["Océan Indien","Océan Atlantique","Océan Pacifique","Mer des Caraïbes"],ans:0},
-  {cat:'Histoire',theme:'theme-culture',deco:'📜',q:"Depuis quelle date La Réunion est-elle un département français ?",opts:["1946","1960","1848","1789"],ans:0},
-  {cat:'Faune',theme:'theme-ocean',deco:'🦈',q:"Quel requin représente un danger particulier à La Réunion ?",opts:["Requin bouledogue","Requin blanc","Orque","Marlin"],ans:0},
-  {cat:'Géographie',theme:'theme-jungle',deco:'🚁',q:"Comment appelle-t-on les 3 cirques naturels de La Réunion ?",opts:["Cilaos, Mafate, Salazie","Cilaos, Bellecombe, Mafate","Salazie, Piton, Mafate","Cilaos, Bébour, Salazie"],ans:0},
-  {cat:'Décalage',theme:'theme-ocean',deco:'⏰',q:"Décalage entre Oullins (même heure que Lyon) et La Réunion en hiver ?",opts:["+3 heures","+2 heures","+4 heures","+1 heure"],ans:0},
-  {cat:'Gastronomie',theme:'theme-volcano',deco:'🌶️',q:"Qu'est-ce que le 'rougail' dans la cuisine réunionnaise ?",opts:["Un condiment épicé","Un dessert","Une boisson","Une viande marinée"],ans:0},
-  {cat:'Nature',theme:'theme-jungle',deco:'🌊',q:"Le lagon de La Réunion est classé Patrimoine UNESCO depuis…",opts:["2010","2000","1995","2018"],ans:0},
-  {cat:'Culture',theme:'theme-culture',deco:'🗣️',q:"Quel créole est parlé à La Réunion ?",opts:["Le créole réunionnais","Le créole haïtien","Le créole guadeloupéen","Le créole mauricien"],ans:0},
-  {cat:'Histoire',theme:'theme-culture',deco:'⚓',q:"Quel était l'ancien nom de La Réunion ?",opts:["Île Bourbon","Île de France","Île Rodrigues","Île Maurice"],ans:0},
-  {cat:'Géographie',theme:'theme-ocean',deco:'🗺️',q:"L'Éperon est dans quelle commune de La Réunion ?",opts:["Saint-Paul","Saint-Denis","Saint-Pierre","Le Port"],ans:0},
-  {cat:'Nature',theme:'theme-jungle',deco:'🦜',q:"Quel oiseau endémique de La Réunion est en danger critique d'extinction ?",opts:["Le Pétrel de Barau","Le Dodo","Le Phaéton","Le Perroquet gris"],ans:0},
+// ═══ QUIZ ═══
+const questions=[
+  {cat:'Géographie',theme:'ocean',deco:'🌊',q:"Superficie de La Réunion ?",opts:["2 512 km²","4 200 km²","1 800 km²","3 100 km²"],ans:0},
+  {cat:'Gastronomie',theme:'volcano',deco:'🍛',q:"Plat emblématique de La Réunion ?",opts:["Rougail saucisse","Bouillabaisse","Cassoulet","Poulet rôti"],ans:0},
+  {cat:'Nature',theme:'jungle',deco:'🏔️',q:"Plus haut sommet de l'Océan Indien ?",opts:["Piton des Neiges","Piton de la Fournaise","Mont Bellecombe","Grand Bénare"],ans:0},
+  {cat:'Faune',theme:'ocean',deco:'🐋',q:"Quand observe-t-on les baleines à bosse à La Réunion ?",opts:["Juil–Oct","Déc–Fév","Mars–Juin","Nov seulement"],ans:0},
+  {cat:'Culture',theme:'culture',deco:'🎵',q:"Le maloya est au patrimoine UNESCO depuis…",opts:["2009","1990","2015","2001"],ans:0},
+  {cat:'Géographie',theme:'ocean',deco:'📍',q:"Dans quel océan se trouve La Réunion ?",opts:["Océan Indien","Atlantique","Pacifique","Méditerranée"],ans:0},
+  {cat:'Histoire',theme:'culture',deco:'📜',q:"Depuis quand La Réunion est-elle département français ?",opts:["1946","1960","1848","1789"],ans:0},
+  {cat:'Faune',theme:'ocean',deco:'🦈',q:"Quel requin est particulièrement dangereux à La Réunion ?",opts:["Requin bouledogue","Requin blanc","Orque","Marlin"],ans:0},
+  {cat:'Géographie',theme:'jungle',deco:'🚁',q:"Les 3 cirques de La Réunion sont…",opts:["Cilaos, Mafate, Salazie","Cilaos, Bellecombe, Mafate","Salazie, Piton, Mafate","Cilaos, Bébour, Salazie"],ans:0},
+  {cat:'Décalage',theme:'ocean',deco:'⏰',q:"Décalage Oullins–La Réunion en hiver ?",opts:["+3 heures","+2 heures","+4 heures","+1 heure"],ans:0},
+  {cat:'Gastronomie',theme:'volcano',deco:'🌶️',q:"Qu'est-ce que le 'rougail' ?",opts:["Un condiment épicé","Un dessert","Une boisson","Une viande"],ans:0},
+  {cat:'Nature',theme:'jungle',deco:'🌊',q:"Le lagon classé UNESCO depuis…",opts:["2010","2000","1995","2018"],ans:0},
+  {cat:'Culture',theme:'culture',deco:'🗣️',q:"Créole parlé à La Réunion ?",opts:["Créole réunionnais","Créole haïtien","Créole guadeloupéen","Créole mauricien"],ans:0},
+  {cat:'Histoire',theme:'culture',deco:'⚓',q:"Ancien nom de La Réunion ?",opts:["Île Bourbon","Île de France","Île Rodrigues","Île Maurice"],ans:0},
+  {cat:'Géographie',theme:'ocean',deco:'🗺️',q:"L'Éperon est dans quelle commune ?",opts:["Saint-Paul","Saint-Denis","Saint-Pierre","Le Port"],ans:0},
+];
+let qIdx=0,qAnswered=false,curP='fr';
+const scores={fr:0,re:0};
+function loadQ(){
+  qAnswered=false;if(qIdx>=questions.length){endQuiz();return;}
+  const q=questions[qIdx];
+  document.getElementById('q-card').className=`quiz-q-card ${q.theme}`;
+  document.getElementById('q-cat').textContent=q.cat;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-deco').textContent=q.deco;
+  document.getElementById('q-turn').textContent=`Tour : ${curP==='fr'?'🇫🇷 Oullins':'🏝️ L\'Éperon'}`;
+  document.getElementById('q-num').textContent=qIdx+1;
+  const el=document.getElementById('q-opts');el.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt';btn.textContent=opt;
+    btn.onclick=()=>answerQ(i,q.ans);el.appendChild(btn);
+  });
+}
+function answerQ(chosen,correct){
+  if(qAnswered)return;qAnswered=true;
+  const btns=document.querySelectorAll('.opt');
+  if(chosen===correct){btns[chosen].classList.add('correct');scores[curP]++;document.getElementById(`sc-${curP}`).textContent=scores[curP];toast(curP==='fr'?'🇫🇷 Bonne réponse !':'🏝️ Bonne réponse !','ok');}
+  else{btns[chosen].classList.add('wrong');btns[correct].classList.add('correct');toast('❌ Raté !','info');}
+  btns.forEach(b=>b.disabled=true);
+  curP=curP==='fr'?'re':'fr';qIdx++;
+  setTimeout(loadQ,1800);
+}
+function skipQ(){curP=curP==='fr'?'re':'fr';qIdx++;loadQ();}
+function endQuiz(){
+  document.getElementById('q-card').className='quiz-q-card jungle';
+  const w=scores.fr>scores.re?'🇫🇷 Oullins gagne !':scores.re>scores.fr?'🏝️ L\'Éperon gagne !':'🤝 Égalité !';
+  document.getElementById('q-cat').textContent='Résultat';
+  document.getElementById('q-text').textContent=w;
+  document.getElementById('q-deco').textContent='🏆';
+  document.getElementById('q-turn').textContent=`${scores.fr} - ${scores.re}`;
+  document.getElementById('q-opts').innerHTML=`<button class="btn btn-leaf" onclick="resetQuiz()" style="width:100%;justify-content:center;margin-top:8px">Rejouer 🔄</button>`;
+}
+function resetQuiz(){qIdx=0;curP='fr';scores.fr=0;scores.re=0;document.getElementById('sc-fr').textContent='0';document.getElementById('sc-re').textContent='0';loadQ();}
+loadQ();
+
+// ═══ NEWS — Vrais flux RSS via rss2json.com ═══
+// Sources : Zinfos974 + Imaz Press Réunion (journaux locaux)
+
+const RSS_SOURCES = [
+  {
+    name: 'Zinfos974',
+    url: 'https://www.zinfos974.com/feed/',
+    color: '#e63946'
+  },
+  {
+    name: 'Imaz Press',
+    url: 'https://www.imazpress.com/feed',
+    color: '#0096c7'
+  }
 ];
 
-let qIdx=0, qAnswered=false, curPlayer='fr';
-const scores = { fr:0, re:0 };
+// rss2json.com : proxy RSS gratuit, supporte le CORS
+const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-function loadQuestion() {
-  qAnswered = false;
-  if (qIdx >= questions.length) { endQuiz(); return; }
-  const q = questions[qIdx];
-  document.getElementById('quiz-card').className = `quiz-question-card ${q.theme}`;
-  document.getElementById('q-cat').textContent = q.cat;
-  document.getElementById('q-text').textContent = q.q;
-  document.getElementById('q-deco').textContent = q.deco;
-  document.getElementById('q-turn').textContent = `Tour de : ${curPlayer==='fr' ? '🇫🇷 Oullins' : '🏝️ L\'Éperon'}`;
-  document.getElementById('q-num').textContent = qIdx + 1;
-  const el = document.getElementById('quiz-opts');
-  el.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'quiz-opt'; btn.textContent = opt;
-    btn.onclick = () => answer(i, q.ans);
-    el.appendChild(btn);
+let allArticles = [];
+let currentCat = 'all';
+let newsLoading = false;
+
+// Détecte des mots-clés pour catégoriser les articles
+function categorize(title, desc) {
+  const t = (title + ' ' + desc).toLowerCase();
+  if (/éruption|lave|volcan|fournaise|sismique|trémor|piton/.test(t)) return { cat: 'eruption', emoji: '🌋' };
+  if (/baleine|requin|dauphin|tortue|poisson|lagon|plongée|mer|océan|nautique|pêche|corail/.test(t)) return { cat: 'ocean', emoji: '🌊' };
+  if (/cyclone|tempête|alerte|vigilance|météo|pluie|inondation|submersion|vent|crue/.test(t)) return { cat: 'alerte', emoji: '⚠️' };
+  if (/maloya|festival|musique|culture|patrimoine|art|spectacle|cinéma|théâtre|exposition/.test(t)) return { cat: 'culture', emoji: '🎵' };
+  if (/nature|forêt|endémique|faune|flore|cirque|sentier|randonnée|biodiversité|tortue|oiseau/.test(t)) return { cat: 'nature', emoji: '🌿' };
+  return { cat: 'general', emoji: '📰' };
+}
+
+function timeAgo(dateStr) {
+  const date = new Date(dateStr);
+  if (isNaN(date)) return '';
+  const diff = Math.floor((Date.now() - date) / 60000); // minutes
+  if (diff < 1) return 'À l\'instant';
+  if (diff < 60) return `Il y a ${diff} min`;
+  if (diff < 1440) return `Il y a ${Math.floor(diff/60)}h`;
+  return `Il y a ${Math.floor(diff/1440)}j`;
+}
+
+function stripHtml(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html || '';
+  return tmp.textContent.trim().slice(0, 160) + (tmp.textContent.length > 160 ? '…' : '');
+}
+
+async function fetchRSS(source) {
+  const url = RSS2JSON + encodeURIComponent(source.url) + '&count=15';
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data.status !== 'ok') return [];
+  return data.items.map(item => ({
+    title: item.title,
+    summary: item.description ? stripHtml(item.description) : item.title,
+    link: item.link,
+    date: item.pubDate,
+    source: source.name,
+    sourceColor: source.color,
+    ...categorize(item.title, item.description || '')
+  }));
+}
+
+async function loadNews() {
+  if (newsLoading) return;
+  newsLoading = true;
+
+  const feed = document.getElementById('news-feed');
+  feed.innerHTML = `
+    <div class="card" style="text-align:center;padding:32px;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:10px">⏳</div>
+      <div style="font-weight:700">Chargement des actus…</div>
+      <div style="font-size:.75rem;margin-top:4px">Zinfos974 & Imaz Press</div>
+    </div>`;
+
+  try {
+    const results = await Promise.allSettled(RSS_SOURCES.map(fetchRSS));
+    allArticles = [];
+    results.forEach(r => {
+      if (r.status === 'fulfilled') allArticles.push(...r.value);
+    });
+    // Trier par date, plus récent en premier
+    allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const now = new Date();
+    document.getElementById('news-time').textContent =
+      `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+    renderNews(currentCat);
+    if (allArticles.length > 0) toast(`📰 ${allArticles.length} articles chargés`, 'ok');
+    else toast('⚠️ Aucun article trouvé', 'err');
+  } catch(e) {
+    feed.innerHTML = `
+      <div class="card" style="text-align:center;padding:32px">
+        <div style="font-size:2rem;margin-bottom:10px">😕</div>
+        <div style="font-weight:700;color:var(--hibiscus)">Impossible de charger les actus</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:6px">Vérifiez votre connexion</div>
+        <button class="btn btn-ocean" onclick="loadNews()" style="margin-top:14px">Réessayer</button>
+      </div>`;
+    toast('⚠️ Erreur de chargement', 'err');
+  }
+  newsLoading = false;
+}
+
+function filterNews(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.news-filter').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  renderNews(cat);
+}
+
+function renderNews(cat) {
+  const feed = document.getElementById('news-feed');
+  if (allArticles.length === 0) { loadNews(); return; }
+
+  const filtered = cat === 'all'
+    ? allArticles
+    : allArticles.filter(n => n.cat === cat);
+
+  if (filtered.length === 0) {
+    feed.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);padding:30px;font-weight:700">Aucun article dans cette catégorie pour l'instant</div>`;
+    return;
+  }
+
+  feed.innerHTML = '';
+  filtered.slice(0, 20).forEach(n => {
+    const div = document.createElement('div');
+    div.className = `news-item ${n.cat}`;
+    div.style.cursor = 'pointer';
+    div.onclick = () => window.open(n.link, '_blank');
+    div.innerHTML = `
+      <div class="news-body">
+        <div class="news-cat-row">
+          <span class="news-emoji">${n.emoji}</span>
+          <span class="news-cat-badge">${catLabel(n.cat)}</span>
+          <span style="margin-left:auto;font-size:.6rem;font-weight:700;color:${n.sourceColor};background:${n.sourceColor}18;padding:2px 7px;border-radius:8px">${n.source}</span>
+        </div>
+        <div class="news-title">${n.title}</div>
+        <div class="news-summary">${n.summary}</div>
+        <div style="font-size:.62rem;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px">
+          <span>${timeAgo(n.date)}</span>
+          <span style="color:#ddd">·</span>
+          <span style="color:var(--ocean)">Lire l'article →</span>
+        </div>
+      </div>`;
+    feed.appendChild(div);
   });
 }
 
-function answer(chosen, correct) {
-  if (qAnswered) return;
-  qAnswered = true;
-  const btns = document.querySelectorAll('.quiz-opt');
-  if (chosen === correct) {
-    btns[chosen].classList.add('correct');
-    scores[curPlayer]++;
-    document.getElementById(`score-${curPlayer}`).textContent = scores[curPlayer];
-    toast(curPlayer==='fr' ? '🇫🇷 Bonne réponse !' : '🏝️ Bonne réponse !', 'ok');
-  } else {
-    btns[chosen].classList.add('wrong');
-    btns[correct].classList.add('correct');
-    toast('❌ Raté !', 'info');
-  }
-  btns.forEach(b => b.disabled = true);
-  curPlayer = curPlayer==='fr' ? 're' : 'fr';
-  qIdx++;
-  setTimeout(loadQuestion, 2000);
+function catLabel(cat) {
+  return { eruption:'🌋 Éruption', ocean:'🌊 Océan', nature:'🌿 Nature', alerte:'⚠️ Alerte', culture:'🎵 Culture', general:'📰 Général' }[cat] || '📰';
 }
 
-function skipQuestion() {
-  curPlayer = curPlayer==='fr' ? 're' : 'fr';
-  qIdx++;
-  loadQuestion();
-}
+// Charge au premier clic sur l'onglet Actus
+let newsLoaded = false;
+const origSwitchTab = window.switchTab;
+window.switchTab = function(tab, el) {
+  origSwitchTab ? origSwitchTab(tab, el) : null;
+  if (tab === 'news' && !newsLoaded) { newsLoaded = true; loadNews(); }
+};
 
-function endQuiz() {
-  document.getElementById('quiz-card').className = 'quiz-question-card theme-jungle';
-  const w = scores.fr > scores.re ? '🇫🇷 Oullins gagne !' : scores.re > scores.fr ? '🏝️ L\'Éperon gagne !' : '🤝 Égalité parfaite !';
-  document.getElementById('q-cat').textContent = 'Résultat final';
-  document.getElementById('q-text').textContent = w;
-  document.getElementById('q-deco').textContent = '🏆';
-  document.getElementById('q-turn').textContent = `${scores.fr} - ${scores.re}`;
-  document.getElementById('quiz-opts').innerHTML = `<button class="btn btn-leaf" onclick="resetQuiz()" style="margin-top:8px;grid-column:1/-1">Rejouer 🔄</button>`;
-}
-
-function resetQuiz() {
-  qIdx=0; curPlayer='fr'; scores.fr=0; scores.re=0;
-  document.getElementById('score-fr').textContent = '0';
-  document.getElementById('score-re').textContent = '0';
-  loadQuestion();
-}
-
-loadQuestion();
+// Refresh button dans le header
+document.querySelector('[onclick="renderNews(currentCat)"]') &&
+  document.querySelector('[onclick="renderNews(currentCat)"]').setAttribute('onclick', 'loadNews()');
 </script>
 </body>
 </html>
