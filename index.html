@@ -615,7 +615,7 @@ body {
 
     <div class="news-refresh">
       <span class="live-dot"></span>
-      Mis à jour à <span id="news-time">--:--</span> · <button class="btn btn-ghost" onclick="renderNews(currentCat)" style="padding:5px 12px;font-size:.72rem">🔄 Refresh</button>
+      Mis à jour à <span id="news-time">--:--</span> · <button class="btn btn-ghost" onclick="newsLoaded=true;loadNews()" style="padding:5px 12px;font-size:.72rem">🔄 Refresh</button>
     </div>
 
     <div class="news-filters" id="news-filters">
@@ -872,70 +872,82 @@ function endQuiz(){
 function resetQuiz(){qIdx=0;curP='fr';scores.fr=0;scores.re=0;document.getElementById('sc-fr').textContent='0';document.getElementById('sc-re').textContent='0';loadQ();}
 loadQ();
 
-// ═══ NEWS — Vrais flux RSS via rss2json.com ═══
-// Sources : Zinfos974 + Imaz Press Réunion (journaux locaux)
+// ═══ NEWS — RSS en direct via allorigins.win ═══
+// Sources : Zinfos974 + Imaz Press (journaux locaux réunionnais)
+// Proxy : allorigins.win (open source, stable, CORS-friendly)
 
 const RSS_SOURCES = [
-  {
-    name: 'Zinfos974',
-    url: 'https://www.zinfos974.com/feed/',
-    color: '#e63946'
-  },
-  {
-    name: 'Imaz Press',
-    url: 'https://www.imazpress.com/feed',
-    color: '#0096c7'
-  }
+  { name:'Zinfos974',  color:'#e63946', url:'https://www.zinfos974.com/feed/' },
+  { name:'Imaz Press', color:'#0096c7', url:'https://www.imazpress.com/feed'  },
 ];
 
-// rss2json.com : proxy RSS gratuit, supporte le CORS
-const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
+// Fallback si les flux sont indisponibles (articles récents réels)
+const FALLBACK = [
+  {title:'Zinfos974 — Actualités de La Réunion',summary:'Toute l\'actualité de l\'île en direct. Cliquez pour lire.',link:'https://www.zinfos974.com',cat:'general',emoji:'📰',source:'Zinfos974',sourceColor:'#e63946',date:new Date().toISOString()},
+  {title:'Imaz Press — L\'actualité réunionnaise',summary:'L\'agence de presse locale. Politique, société, faits divers.',link:'https://www.imazpress.com',cat:'general',emoji:'📰',source:'Imaz Press',sourceColor:'#0096c7',date:new Date().toISOString()},
+  {title:'Météo France Réunion — Vigilances en cours',summary:'Consultez les alertes météo officielles pour La Réunion.',link:'https://meteofrance.re',cat:'alerte',emoji:'⚠️',source:'Météo France',sourceColor:'#f4a261',date:new Date().toISOString()},
+  {title:'OVPF — Observatoire volcanologique du Piton de la Fournaise',summary:'Suivez l\'activité volcanique en temps réel.',link:'https://www.ipgp.fr/fr/ovpf/actualites-ovpf',cat:'eruption',emoji:'🌋',source:'OVPF',sourceColor:'#d62828',date:new Date().toISOString()},
+];
 
 let allArticles = [];
 let currentCat = 'all';
 let newsLoading = false;
+let newsLoaded = false;
 
-// Détecte des mots-clés pour catégoriser les articles
-function categorize(title, desc) {
-  const t = (title + ' ' + desc).toLowerCase();
-  if (/éruption|lave|volcan|fournaise|sismique|trémor|piton/.test(t)) return { cat: 'eruption', emoji: '🌋' };
-  if (/baleine|requin|dauphin|tortue|poisson|lagon|plongée|mer|océan|nautique|pêche|corail/.test(t)) return { cat: 'ocean', emoji: '🌊' };
-  if (/cyclone|tempête|alerte|vigilance|météo|pluie|inondation|submersion|vent|crue/.test(t)) return { cat: 'alerte', emoji: '⚠️' };
-  if (/maloya|festival|musique|culture|patrimoine|art|spectacle|cinéma|théâtre|exposition/.test(t)) return { cat: 'culture', emoji: '🎵' };
-  if (/nature|forêt|endémique|faune|flore|cirque|sentier|randonnée|biodiversité|tortue|oiseau/.test(t)) return { cat: 'nature', emoji: '🌿' };
-  return { cat: 'general', emoji: '📰' };
+function categorize(text) {
+  const t = text.toLowerCase();
+  if (/éruption|lave|volcan|fournaise|sismique|trémor/.test(t))       return {cat:'eruption', emoji:'🌋'};
+  if (/baleine|requin|dauphin|tortue|lagon|mer|océan|pêche|corail/.test(t)) return {cat:'ocean',    emoji:'🌊'};
+  if (/cyclone|tempête|alerte|vigilance|inondation|vent|crue/.test(t)) return {cat:'alerte',   emoji:'⚠️'};
+  if (/maloya|festival|musique|culture|patrimoine|art|spectacle/.test(t)) return {cat:'culture', emoji:'🎵'};
+  if (/nature|forêt|endémique|faune|flore|cirque|randonnée/.test(t))   return {cat:'nature',   emoji:'🌿'};
+  return {cat:'general', emoji:'📰'};
 }
 
 function timeAgo(dateStr) {
-  const date = new Date(dateStr);
-  if (isNaN(date)) return '';
-  const diff = Math.floor((Date.now() - date) / 60000); // minutes
-  if (diff < 1) return 'À l\'instant';
-  if (diff < 60) return `Il y a ${diff} min`;
-  if (diff < 1440) return `Il y a ${Math.floor(diff/60)}h`;
-  return `Il y a ${Math.floor(diff/1440)}j`;
+  const d = new Date(dateStr);
+  if (isNaN(d)) return '';
+  const m = Math.floor((Date.now() - d) / 60000);
+  if (m < 1)    return 'À l\'instant';
+  if (m < 60)   return `Il y a ${m} min`;
+  if (m < 1440) return `Il y a ${Math.floor(m/60)}h`;
+  return `Il y a ${Math.floor(m/1440)}j`;
 }
 
 function stripHtml(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html || '';
-  return tmp.textContent.trim().slice(0, 160) + (tmp.textContent.length > 160 ? '…' : '');
+  const d = document.createElement('div');
+  d.innerHTML = html || '';
+  const t = d.textContent.replace(/\s+/g,' ').trim();
+  return t.length > 180 ? t.slice(0,180)+'…' : t;
 }
 
-async function fetchRSS(source) {
-  const url = RSS2JSON + encodeURIComponent(source.url) + '&count=15';
-  const res = await fetch(url);
-  const data = await res.json();
-  if (data.status !== 'ok') return [];
-  return data.items.map(item => ({
-    title: item.title,
-    summary: item.description ? stripHtml(item.description) : item.title,
-    link: item.link,
-    date: item.pubDate,
-    source: source.name,
-    sourceColor: source.color,
-    ...categorize(item.title, item.description || '')
-  }));
+// Fetch avec timeout strict
+function fetchWithTimeout(url, ms=8000) {
+  return Promise.race([
+    fetch(url),
+    new Promise((_,r) => setTimeout(() => r(new Error('timeout')), ms))
+  ]);
+}
+
+async function fetchOneRSS(source) {
+  // allorigins renvoie le XML encodé en JSON
+  const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(source.url)}`;
+  const res = await fetchWithTimeout(proxy, 8000);
+  const json = await res.json();
+  // Parse XML
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(json.contents, 'text/xml');
+  const items = xml.querySelectorAll('item');
+  const arts = [];
+  items.forEach(item => {
+    const title   = item.querySelector('title')?.textContent || '';
+    const desc    = item.querySelector('description')?.textContent || '';
+    const link    = item.querySelector('link')?.textContent || source.url;
+    const pubDate = item.querySelector('pubDate')?.textContent || '';
+    const {cat, emoji} = categorize(title + ' ' + desc);
+    arts.push({ title, summary: stripHtml(desc), link, date: pubDate, cat, emoji, source: source.name, sourceColor: source.color });
+  });
+  return arts;
 }
 
 async function loadNews() {
@@ -944,58 +956,47 @@ async function loadNews() {
 
   const feed = document.getElementById('news-feed');
   feed.innerHTML = `
-    <div class="card" style="text-align:center;padding:32px;color:var(--muted)">
-      <div style="font-size:2rem;margin-bottom:10px">⏳</div>
-      <div style="font-weight:700">Chargement des actus…</div>
-      <div style="font-size:.75rem;margin-top:4px">Zinfos974 & Imaz Press</div>
+    <div class="card" style="text-align:center;padding:36px;color:var(--muted)">
+      <div style="font-size:2.2rem;margin-bottom:10px">🌴</div>
+      <div style="font-weight:800;font-size:.95rem">Chargement des actus…</div>
+      <div style="font-size:.72rem;margin-top:6px">Zinfos974 & Imaz Press Réunion</div>
     </div>`;
 
-  try {
-    const results = await Promise.allSettled(RSS_SOURCES.map(fetchRSS));
-    allArticles = [];
-    results.forEach(r => {
-      if (r.status === 'fulfilled') allArticles.push(...r.value);
-    });
-    // Trier par date, plus récent en premier
-    allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const results = await Promise.allSettled(RSS_SOURCES.map(fetchOneRSS));
+  allArticles = [];
+  results.forEach(r => { if (r.status==='fulfilled') allArticles.push(...r.value); });
+  allArticles.sort((a,b) => new Date(b.date) - new Date(a.date));
 
-    const now = new Date();
-    document.getElementById('news-time').textContent =
-      `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const now = new Date();
+  document.getElementById('news-time').textContent =
+    `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
-    renderNews(currentCat);
-    if (allArticles.length > 0) toast(`📰 ${allArticles.length} articles chargés`, 'ok');
-    else toast('⚠️ Aucun article trouvé', 'err');
-  } catch(e) {
-    feed.innerHTML = `
-      <div class="card" style="text-align:center;padding:32px">
-        <div style="font-size:2rem;margin-bottom:10px">😕</div>
-        <div style="font-weight:700;color:var(--hibiscus)">Impossible de charger les actus</div>
-        <div style="font-size:.78rem;color:var(--muted);margin-top:6px">Vérifiez votre connexion</div>
-        <button class="btn btn-ocean" onclick="loadNews()" style="margin-top:14px">Réessayer</button>
-      </div>`;
-    toast('⚠️ Erreur de chargement', 'err');
+  if (allArticles.length === 0) {
+    // Fallback : liens directs vers les journaux
+    allArticles = FALLBACK;
+    toast('🌴 Flux indisponible — liens directs affichés','info');
+  } else {
+    toast(`📰 ${allArticles.length} articles chargés !`, 'ok');
   }
+
   newsLoading = false;
+  renderNews(currentCat);
 }
 
 function filterNews(cat, el) {
   currentCat = cat;
   document.querySelectorAll('.news-filter').forEach(f => f.classList.remove('active'));
   el.classList.add('active');
+  if (!newsLoaded) { newsLoaded = true; loadNews(); return; }
   renderNews(cat);
 }
 
 function renderNews(cat) {
   const feed = document.getElementById('news-feed');
-  if (allArticles.length === 0) { loadNews(); return; }
-
-  const filtered = cat === 'all'
-    ? allArticles
-    : allArticles.filter(n => n.cat === cat);
+  const filtered = cat==='all' ? allArticles : allArticles.filter(n => n.cat===cat);
 
   if (filtered.length === 0) {
-    feed.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);padding:30px;font-weight:700">Aucun article dans cette catégorie pour l'instant</div>`;
+    feed.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);padding:30px;font-weight:700">Aucun article dans cette catégorie</div>`;
     return;
   }
 
@@ -1010,14 +1011,14 @@ function renderNews(cat) {
         <div class="news-cat-row">
           <span class="news-emoji">${n.emoji}</span>
           <span class="news-cat-badge">${catLabel(n.cat)}</span>
-          <span style="margin-left:auto;font-size:.6rem;font-weight:700;color:${n.sourceColor};background:${n.sourceColor}18;padding:2px 7px;border-radius:8px">${n.source}</span>
+          <span style="margin-left:auto;font-size:.58rem;font-weight:800;color:${n.sourceColor};background:${n.sourceColor}22;padding:2px 8px;border-radius:8px;flex-shrink:0">${n.source}</span>
         </div>
         <div class="news-title">${n.title}</div>
         <div class="news-summary">${n.summary}</div>
-        <div style="font-size:.62rem;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px">
+        <div style="font-size:.62rem;color:var(--muted);margin-top:7px;display:flex;align-items:center;gap:6px">
           <span>${timeAgo(n.date)}</span>
           <span style="color:#ddd">·</span>
-          <span style="color:var(--ocean)">Lire l'article →</span>
+          <span style="color:var(--ocean);font-weight:700">Lire l'article →</span>
         </div>
       </div>`;
     feed.appendChild(div);
@@ -1025,20 +1026,15 @@ function renderNews(cat) {
 }
 
 function catLabel(cat) {
-  return { eruption:'🌋 Éruption', ocean:'🌊 Océan', nature:'🌿 Nature', alerte:'⚠️ Alerte', culture:'🎵 Culture', general:'📰 Général' }[cat] || '📰';
+  return {eruption:'🌋 Éruption',ocean:'🌊 Océan',nature:'🌿 Nature',alerte:'⚠️ Alerte',culture:'🎵 Culture',general:'📰 Info'}[cat]||'📰';
 }
 
-// Charge au premier clic sur l'onglet Actus
-let newsLoaded = false;
-const origSwitchTab = window.switchTab;
-window.switchTab = function(tab, el) {
-  origSwitchTab ? origSwitchTab(tab, el) : null;
-  if (tab === 'news' && !newsLoaded) { newsLoaded = true; loadNews(); }
+// Charge les news au premier clic sur l'onglet — override de switchTab
+const _switchTab = switchTab;
+switchTab = function(tab, el) {
+  _switchTab(tab, el);
+  if (tab==='news' && !newsLoaded) { newsLoaded=true; loadNews(); }
 };
-
-// Refresh button dans le header
-document.querySelector('[onclick="renderNews(currentCat)"]') &&
-  document.querySelector('[onclick="renderNews(currentCat)"]').setAttribute('onclick', 'loadNews()');
 </script>
 </body>
 </html>
